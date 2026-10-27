@@ -226,7 +226,7 @@ export default function HomePage() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: 'Shotsy',
-    url: 'https://shotsygame.com',
+    url: 'https://shotsy-web.vercel.app',
     applicationCategory: 'GameApplication',
     operatingSystem: 'All',
     description:

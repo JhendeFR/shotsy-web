@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/api/',
     },
-    sitemap: 'https://shotsygame.com/sitemap.xml',
+    sitemap: 'https://shotsy-web.vercel.app/sitemap.xml',
   };
 }
