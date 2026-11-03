@@ -1,0 +1,348 @@
+/* ==========================================================================
+   PANEL DE ADMINISTRADOR SHOTSY - CSS MODULES
+   ========================================================================== */
+
+.adminContainer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .adminContainer {
+    padding: 32px;
+  }
+}
+
+/* Header del Admin */
+.adminHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  background: var(--glass-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(12px);
+}
+
+.adminTitle {
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.88rem;
+  transition: all 0.15s ease;
+}
+
+.backLink:hover {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+}
+
+/* Pantalla de Bloqueo / PIN de Seguridad */
+.pinBox {
+  max-width: 420px;
+  margin: 80px auto;
+  padding: 32px 24px;
+  background: var(--bg-surface);
+  border: 2px solid var(--neon-purple);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 0 35px rgba(138, 43, 226, 0.35);
+}
+
+.pinInput {
+  min-height: 48px;
+  background: var(--input-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0 16px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.pinInput:focus {
+  border-color: var(--neon-cyan);
+}
+
+.pinSubmitBtn {
+  min-height: 48px;
+  background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+
+.pinSubmitBtn:hover {
+  transform: translateY(-1px);
+}
+
+/* Tarjetas de Métricas Rápidas */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.metricCard {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metricLabel {
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.metricValue {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--neon-cyan);
+}
+
+/* Pestañas de Navegación */
+.adminTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 8px;
+}
+
+.adminTabBtn {
+  min-height: 44px;
+  padding: 0 20px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.adminTabBtn:hover {
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.adminTabBtnActive {
+  background: rgba(0, 242, 254, 0.12);
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.25);
+}
+
+/* Tablas y Paneles de Contenido */
+.panelCard {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tableResponsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.adminTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.adminTable th {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 800;
+}
+
+.adminTable td {
+  padding: 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.actionBtnGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.btnApprove {
+  min-height: 36px;
+  padding: 0 14px;
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid #10b981;
+  color: #10b981;
+  border-radius: var(--radius-pill);
+  font-weight: 800;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btnApprove:hover {
+  background: #10b981;
+  color: #07050f;
+}
+
+.btnReject {
+  min-height: 36px;
+  padding: 0 14px;
+  background: rgba(239, 68, 68, 0.18);
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  border-radius: var(--radius-pill);
+  font-weight: 800;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btnReject:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+.btnToggleVip {
+  min-height: 36px;
+  padding: 0 14px;
+  background: rgba(255, 183, 3, 0.18);
+  border: 1px solid var(--neon-gold);
+  color: var(--neon-gold);
+  border-radius: var(--radius-pill);
+  font-weight: 800;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btnToggleVip:hover {
+  background: var(--neon-gold);
+  color: #07050f;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.statusPending {
+  background: rgba(255, 183, 3, 0.15);
+  color: var(--neon-gold);
+  border: 1px solid rgba(255, 183, 3, 0.35);
+}
+
+.statusApproved {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.statusBanned {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+/* Área de Código SQL */
+.sqlBox {
+  background: #05030a;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #a8ff78;
+  max-height: 420px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  line-height: 1.45;
+}
+
+.copySqlBtn {
+  min-height: 44px;
+  padding: 0 20px;
+  background: var(--neon-cyan);
+  color: #07050f;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.copySqlBtn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+

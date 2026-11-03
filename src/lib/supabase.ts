@@ -22,4 +22,27 @@ export interface Challenge {
   content: string;
   drinks_penalty: number;
   is_vip: boolean;
+  active?: boolean;
+}
+
+export interface UserProfile {
+  id: string;
+  email: string;
+  display_name?: string;
+  is_vip: boolean;
+  is_banned: boolean;
+  role: 'user' | 'admin';
+  created_at?: string;
+}
+
+export interface ChallengeSuggestion {
+  id: number;
+  user_id?: string;
+  user_email?: string;
+  category_id: number;
+  category_name?: string;
+  content: string;
+  drinks_penalty: number;
+  status: 'pending' | 'approved' | 'rejected';
+  created_at?: string;
 }
