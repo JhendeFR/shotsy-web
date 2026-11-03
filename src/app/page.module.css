@@ -3,24 +3,26 @@
    Directivas: UX Designer, Taste, Transitions y Web Artifacts Builder
    ========================================================================== */
 
-/* Fondo Animado Interactivo de Alta Fidelidad (Acelerado por GPU) */
+/* Fondo Animado de Luces de Discoteca Vivas (Acelerado por GPU) */
 .backgroundRoot {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
+  background-color: var(--bg-main);
 }
 
 .ambientMesh {
   position: absolute;
   inset: 0;
   background-image: 
-    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 36px 36px;
-  background-position: 0 0, 18px 18px;
-  opacity: 0.6;
+    radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: 0 0, 16px 16px;
+  opacity: 0.4;
+  z-index: 2;
 }
 
 [data-theme="light"] .ambientMesh {
@@ -29,90 +31,132 @@
     radial-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px);
 }
 
-.orb1, .orb2, .orb3 {
+/* Focos Robóticos / Haces Láser de Discoteca (Moving Beams) */
+.discoBeam1 {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
+  top: -15%;
+  left: 10%;
+  width: 50vw;
+  height: 140vh;
+  transform-origin: top center;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 0, 127, 0.65) 0%,
+    rgba(255, 0, 127, 0.28) 45%,
+    transparent 85%
+  );
+  clip-path: polygon(48% 0%, 52% 0%, 100% 100%, 0% 100%);
+  filter: blur(28px);
+  mix-blend-mode: screen;
   will-change: transform;
+  animation: beamSweepLeft 5.5s ease-in-out infinite alternate;
 }
 
-.orb1 {
-  width: 440px;
-  height: 440px;
-  top: -100px;
-  left: -80px;
-  background: radial-gradient(circle, var(--neon-purple) 0%, transparent 70%);
+.discoBeam2 {
+  position: absolute;
+  top: -15%;
+  right: 10%;
+  width: 55vw;
+  height: 140vh;
+  transform-origin: top center;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 242, 254, 0.6) 0%,
+    rgba(0, 242, 254, 0.25) 45%,
+    transparent 85%
+  );
+  clip-path: polygon(48% 0%, 52% 0%, 100% 100%, 0% 100%);
+  filter: blur(30px);
+  mix-blend-mode: screen;
+  will-change: transform;
+  animation: beamSweepRight 6.5s ease-in-out infinite alternate;
+}
+
+.discoBeam3 {
+  position: absolute;
+  bottom: -20%;
+  left: 25%;
+  width: 60vw;
+  height: 130vh;
+  transform-origin: bottom center;
+  background: linear-gradient(
+    0deg,
+    rgba(138, 43, 226, 0.55) 0%,
+    rgba(138, 43, 226, 0.2) 50%,
+    transparent 90%
+  );
+  clip-path: polygon(48% 100%, 52% 100%, 100% 0%, 0% 0%);
+  filter: blur(35px);
+  mix-blend-mode: screen;
+  will-change: transform;
+  animation: beamSweepCenter 7s ease-in-out infinite alternate;
+}
+
+.discoBeam4 {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  width: 450px;
+  height: 450px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 183, 3, 0.35) 0%, rgba(255, 0, 127, 0.2) 40%, transparent 70%);
+  filter: blur(50px);
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+  animation: strobeBeat 3.2s ease-in-out infinite alternate;
+}
+
+/* Capa de Protección Suave (Permite ver las luces sin perder contraste de texto) */
+.discoProtector {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(7, 5, 15, 0.25) 0%, rgba(7, 5, 15, 0.55) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+[data-theme="light"] .discoProtector {
+  background: radial-gradient(circle at 50% 50%, rgba(245, 244, 251, 0.3) 0%, rgba(245, 244, 251, 0.6) 100%);
+}
+
+[data-theme="light"] .discoBeam1,
+[data-theme="light"] .discoBeam2,
+[data-theme="light"] .discoBeam3 {
   opacity: 0.35;
-  animation: floatOrb1 18s ease-in-out infinite alternate;
+  filter: blur(45px);
 }
 
-.orb2 {
-  width: 500px;
-  height: 500px;
-  bottom: -120px;
-  right: -100px;
-  background: radial-gradient(circle, var(--neon-pink) 0%, transparent 70%);
-  opacity: 0.3;
-  animation: floatOrb2 22s ease-in-out infinite alternate;
+@keyframes beamSweepLeft {
+  0% { transform: rotate(-35deg) scaleX(0.9); }
+  50% { transform: rotate(15deg) scaleX(1.1); }
+  100% { transform: rotate(38deg) scaleX(1); }
 }
 
-.orb3 {
-  width: 380px;
-  height: 380px;
-  top: 40%;
-  left: 30%;
-  background: radial-gradient(circle, var(--neon-cyan) 0%, transparent 70%);
-  opacity: 0.18;
-  animation: floatOrb3 25s ease-in-out infinite alternate;
+@keyframes beamSweepRight {
+  0% { transform: rotate(35deg) scaleX(1); }
+  50% { transform: rotate(-18deg) scaleX(1.15); }
+  100% { transform: rotate(-36deg) scaleX(0.95); }
 }
 
-[data-theme="light"] .orb1,
-[data-theme="light"] .orb2,
-[data-theme="light"] .orb3 {
-  opacity: 0.22;
-  filter: blur(100px);
+@keyframes beamSweepCenter {
+  0% { transform: rotate(-25deg) scaleY(0.95); }
+  50% { transform: rotate(0deg) scaleY(1.1); }
+  100% { transform: rotate(28deg) scaleY(1); }
 }
 
-@keyframes floatOrb1 {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(80px, 120px, 0) scale(1.15);
-  }
-  100% {
-    transform: translate3d(-40px, 80px, 0) scale(0.9);
-  }
+@keyframes strobeBeat {
+  0% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.25; }
+  50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.55; }
+  100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.3; }
 }
 
-@keyframes floatOrb2 {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(-100px, -90px, 0) scale(1.1);
-  }
-  100% {
-    transform: translate3d(60px, -50px, 0) scale(0.95);
-  }
-}
-
-@keyframes floatOrb3 {
-  0% {
-    transform: translate3d(0, 0, 0) scale(0.9);
-  }
-  50% {
-    transform: translate3d(-60px, 80px, 0) scale(1.2);
-  }
-  100% {
-    transform: translate3d(70px, -60px, 0) scale(1);
-  }
-}
-
-/* Contenedor Principal */
+/* ==========================================================================
+   Contenedor Principal
+   ========================================================================== */
 .container {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   width: 100%;
   max-width: 960px;
   margin: 0 auto;
@@ -201,6 +245,40 @@
   outline-offset: 3px;
 }
 
+.authBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.authBtn:hover {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  transform: translateY(-1px);
+}
+
+.userBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
+  color: var(--text-primary);
+}
+
 /* Botón VIP Header con Pulso Neón */
 .vipButton {
   display: flex;
@@ -238,12 +316,8 @@
 }
 
 @keyframes vipPulse {
-  0%, 100% {
-    box-shadow: 0 0 14px rgba(255, 183, 3, 0.35);
-  }
-  50% {
-    box-shadow: 0 0 24px rgba(255, 183, 3, 0.65);
-  }
+  0%, 100% { box-shadow: 0 0 14px rgba(255, 183, 3, 0.35); }
+  50% { box-shadow: 0 0 24px rgba(255, 183, 3, 0.65); }
 }
 
 /* ==========================================================================
@@ -251,7 +325,7 @@
    ========================================================================== */
 .hero {
   text-align: center;
-  padding: 12px 8px 4px;
+  padding: 10px 8px 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -292,9 +366,10 @@
   margin: 0;
 }
 
-/* Barra de Acciones Secundarias (Sugerir Reto) */
+/* Barra de Acciones Secundarias */
 .subBar {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
   margin-top: 4px;
@@ -324,6 +399,28 @@
 
 .suggestPill:active {
   transform: scale(0.97);
+}
+
+.adminLinkPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill);
+  background: rgba(138, 43, 226, 0.15);
+  border: 1px solid rgba(138, 43, 226, 0.35);
+  color: var(--text-primary);
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.adminLinkPill:hover {
+  background: rgba(138, 43, 226, 0.3);
+  border-color: var(--neon-purple);
+  transform: translateY(-1px);
 }
 
 /* ==========================================================================
@@ -461,37 +558,14 @@
 }
 
 /* ==========================================================================
-   Zona de Carta Interactiva (Neon Glow + No Repetición en Sesión)
+   Zona de Carta Interactiva (Neon Glow + Shimmer)
    ========================================================================== */
 .deckSection {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  margin-top: 8px;
-}
-
-/* Badge de Progreso de Sesión (No Repetición) */
-.sessionProgress {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-pill);
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  letter-spacing: 0.02em;
-}
-
-.progressDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--neon-cyan);
-  box-shadow: 0 0 8px var(--neon-cyan);
+  gap: 20px;
+  margin-top: 12px;
 }
 
 .gameCardWrapper {
@@ -595,15 +669,9 @@
 }
 
 @keyframes shimmerSweep {
-  0% {
-    transform: translateX(0%) rotate(25deg);
-    opacity: 0;
-  }
+  0% { transform: translateX(0%) rotate(25deg); opacity: 0; }
   25% { opacity: 1; }
-  100% {
-    transform: translateX(380%) rotate(25deg);
-    opacity: 0;
-  }
+  100% { transform: translateX(380%) rotate(25deg); opacity: 0; }
 }
 
 .cardType {
@@ -693,33 +761,35 @@
 }
 
 /* ==========================================================================
-   Ruleta de Shots con Configuración de Participantes
+   Ruleta de Shots (Con Espaciado Generoso y Nombres Orientados)
    ========================================================================== */
 .wheelSection {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  margin-top: 8px;
+  gap: 28px;
+  margin-top: 24px;
+  padding-top: 12px;
 }
 
-/* Panel de Configuración de Participantes */
+/* 1. Paso Inicial: Pantalla de Jugadores */
 .playersConfigBox {
   width: 100%;
   max-width: 480px;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 28px 24px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  gap: 18px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+  animation: cardScaleIn 0.25s var(--ease-spring) forwards;
 }
 
 .playersConfigTitle {
-  font-size: 1.15rem;
-  font-weight: 800;
+  font-size: 1.2rem;
+  font-weight: 900;
   color: var(--neon-cyan);
   margin: 0;
   display: flex;
@@ -776,22 +846,30 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  min-height: 52px;
   max-height: 160px;
   overflow-y: auto;
   padding: 4px 0;
+  align-items: center;
+}
+
+.emptyPlayersNotice {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  font-style: italic;
 }
 
 .playerChip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 36px;
-  padding: 4px 12px;
+  min-height: 38px;
+  padding: 4px 14px;
   border-radius: var(--radius-pill);
   background: rgba(0, 242, 254, 0.12);
   border: 1px solid rgba(0, 242, 254, 0.3);
   color: var(--text-primary);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 700;
 }
 
@@ -799,14 +877,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.15);
   border: none;
   color: var(--text-primary);
   cursor: pointer;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   line-height: 1;
   transition: background 0.15s ease;
 }
@@ -815,47 +893,68 @@
   background: var(--neon-red);
 }
 
-.generateWheelBtn {
-  min-height: 50px;
-  background: linear-gradient(90deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+/* Botón JUGAR */
+.playWheelBtn {
+  min-height: 54px;
+  background: linear-gradient(90deg, var(--neon-pink) 0%, var(--neon-purple) 50%, var(--neon-cyan) 100%);
   color: #ffffff;
   border: none;
   border-radius: var(--radius-pill);
   font-weight: 900;
-  font-size: 1rem;
+  font-size: 1.15rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  transition: transform 0.12s var(--ease-tactile), box-shadow 0.15s ease;
+  gap: 10px;
+  box-shadow: 0 0 25px rgba(255, 0, 127, 0.5);
+  animation: neonPulse 2.5s ease-in-out infinite;
+  transition: transform 0.12s var(--ease-tactile), filter 0.12s ease;
 }
 
-.generateWheelBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(0, 242, 254, 0.45);
+.playWheelBtn:hover {
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.1);
 }
 
-.generateWheelBtn:active {
+.playWheelBtn:active {
   transform: scale(0.96);
 }
 
-/* Área de Juego de la Ruleta */
+.playWheelBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  animation: none;
+  box-shadow: none;
+}
+
+/* 2. Pantalla de la Ruleta con Espaciado Generoso */
 .wheelWrapper {
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: 330px;
+  height: 330px;
+  margin: 16px 0 24px 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+@media (max-width: 400px) {
+  .wheelWrapper {
+    width: 290px;
+    height: 290px;
+    margin: 12px 0 20px 0;
+  }
+}
+
 .wheelRing {
   position: absolute;
-  inset: -14px;
+  inset: -16px;
   border-radius: 50%;
-  border: 2px dashed rgba(0, 242, 254, 0.4);
-  box-shadow: 0 0 24px rgba(0, 242, 254, 0.25), inset 0 0 14px rgba(255, 0, 127, 0.2);
+  border: 3px dashed rgba(0, 242, 254, 0.45);
+  box-shadow: 0 0 26px rgba(0, 242, 254, 0.3), inset 0 0 16px rgba(255, 0, 127, 0.25);
   pointer-events: none;
   animation: ringRotate 24s linear infinite;
   will-change: transform;
@@ -868,7 +967,7 @@
 
 .wheelRingSpinning {
   border-color: var(--neon-cyan);
-  box-shadow: 0 0 35px var(--neon-cyan), 0 0 60px rgba(255, 0, 127, 0.65), inset 0 0 25px var(--neon-pink);
+  box-shadow: 0 0 40px var(--neon-cyan), 0 0 70px rgba(255, 0, 127, 0.7), inset 0 0 30px var(--neon-pink);
   animation: ringRotateFast 1.2s linear infinite, ringStrobe 0.25s ease-in-out infinite alternate;
 }
 
@@ -878,38 +977,27 @@
 }
 
 @keyframes ringStrobe {
-  0% {
-    opacity: 0.7;
-    filter: drop-shadow(0 0 10px var(--neon-cyan));
-  }
-  100% {
-    opacity: 1;
-    filter: drop-shadow(0 0 25px var(--neon-pink));
-  }
+  0% { opacity: 0.7; filter: drop-shadow(0 0 10px var(--neon-cyan)); }
+  100% { opacity: 1; filter: drop-shadow(0 0 25px var(--neon-pink)); }
 }
 
+/* Puntero Superior con Margen Claro */
 .wheelPointer {
   position: absolute;
-  top: -16px;
+  top: -24px;
   z-index: 10;
   width: 0;
   height: 0;
-  border-left: 14px solid transparent;
-  border-right: 14px solid transparent;
-  border-top: 26px solid var(--neon-gold);
-  filter: drop-shadow(0 0 10px rgba(255, 183, 3, 0.9));
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 30px solid var(--neon-gold);
+  filter: drop-shadow(0 0 14px rgba(255, 183, 3, 0.95));
   animation: pointerPulse 1.8s ease-in-out infinite alternate;
 }
 
 @keyframes pointerPulse {
-  0% {
-    filter: drop-shadow(0 0 6px rgba(255, 183, 3, 0.7));
-    transform: translateY(0);
-  }
-  100% {
-    filter: drop-shadow(0 0 14px rgba(255, 183, 3, 1));
-    transform: translateY(-2px);
-  }
+  0% { filter: drop-shadow(0 0 8px rgba(255, 183, 3, 0.7)); transform: translateY(0); }
+  100% { filter: drop-shadow(0 0 16px rgba(255, 183, 3, 1)); transform: translateY(-3px); }
 }
 
 .wheel {
@@ -918,67 +1006,88 @@
   height: 100%;
   border-radius: 50%;
   border: 5px solid #ffffff;
-  box-shadow: 0 0 30px rgba(255, 0, 127, 0.5), inset 0 0 15px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 32px rgba(255, 0, 127, 0.5), inset 0 0 20px rgba(0, 0, 0, 0.6);
   transition: transform 3.6s cubic-bezier(0.15, 0.85, 0.25, 1);
   will-change: transform;
   overflow: hidden;
 }
 
+/* Nombres de los participantes en la Ruleta */
+.sectorLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+}
+
+/* Centro Fijo SHOTSY (No rota con la ruleta) */
 .wheelCenterCap {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 58px;
-  height: 58px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
   background: var(--bg-surface);
   border: 3px solid var(--neon-gold);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 15px rgba(255, 183, 3, 0.6);
-  z-index: 6;
+  box-shadow: 0 0 20px rgba(255, 183, 3, 0.7);
+  z-index: 8;
   font-weight: 900;
   font-size: 0.75rem;
   color: var(--neon-gold);
+  pointer-events: none;
+  user-select: none;
 }
 
+/* Caja de Resultado con Espaciado Generoso */
 .wheelResultBox {
   background: var(--bg-surface);
   border: 1px solid var(--neon-cyan);
   border-radius: var(--radius-md);
-  padding: 16px 24px;
+  padding: 18px 24px;
   text-align: center;
   max-width: 440px;
   width: 100%;
-  box-shadow: 0 0 20px rgba(0, 242, 254, 0.25);
+  box-shadow: 0 0 22px rgba(0, 242, 254, 0.25);
+  margin-top: 8px;
 }
 
 .wheelResultTitle {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--neon-cyan);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 800;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .wheelResultText {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 900;
   color: var(--text-primary);
+  line-height: 1.4;
 }
 
 .modifyPlayersBtn {
-  min-height: 44px;
+  min-height: 48px;
   background: transparent;
   border: 1px solid var(--border-subtle);
   color: var(--text-secondary);
-  padding: 0 18px;
+  padding: 0 20px;
   border-radius: var(--radius-pill);
   font-weight: 700;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -989,7 +1098,7 @@
 }
 
 /* ==========================================================================
-   Modales (VIP & Sugerencias de Retos)
+   Modales (Auth, VIP & Sugerencias de Retos)
    ========================================================================== */
 .modalOverlay {
   position: fixed;
@@ -1028,9 +1137,14 @@
   overflow-y: auto;
 }
 
-.suggestModalContent {
+.authModalContent {
   border-color: var(--neon-cyan);
   box-shadow: 0 0 35px rgba(0, 242, 254, 0.35), 0 20px 40px rgba(0, 0, 0, 0.8);
+}
+
+.suggestModalContent {
+  border-color: var(--neon-purple);
+  box-shadow: 0 0 35px rgba(138, 43, 226, 0.35), 0 20px 40px rgba(0, 0, 0, 0.8);
 }
 
 @keyframes modalScaleIn {
@@ -1052,7 +1166,7 @@
   margin: 0;
 }
 
-.suggestModalTitle {
+.authModalTitle {
   color: var(--neon-cyan);
 }
 
@@ -1083,8 +1197,78 @@
   gap: 8px;
 }
 
-/* Formulario de Sugerencias */
-.suggestForm {
+/* Tabs dentro del Modal de Auth */
+.authTabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 6px;
+}
+
+.authTabBtn {
+  flex: 1;
+  min-height: 44px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.authTabBtnActive {
+  color: var(--neon-cyan);
+  border-bottom-color: var(--neon-cyan);
+}
+
+/* Botón Google OAuth */
+.googleBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  background: #ffffff;
+  color: #1a1a1a;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.12s var(--ease-tactile), box-shadow 0.15s ease;
+}
+
+.googleBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.25);
+}
+
+.googleBtn:active {
+  transform: scale(0.97);
+}
+
+.authDivider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 4px 0;
+}
+
+.authDivider::before,
+.authDivider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+/* Formularios */
+.suggestForm, .authForm {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -1099,7 +1283,7 @@
   color: var(--text-muted);
 }
 
-.formSelect, .formTextarea {
+.formInput, .formSelect, .formTextarea {
   width: 100%;
   background: var(--input-bg);
   border: 1px solid var(--border-subtle);
@@ -1111,7 +1295,7 @@
   transition: border-color 0.15s ease;
 }
 
-.formSelect:focus, .formTextarea:focus {
+.formInput:focus, .formSelect:focus, .formTextarea:focus {
   border-color: var(--neon-cyan);
 }
 
