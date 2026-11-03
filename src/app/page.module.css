@@ -1,33 +1,161 @@
+/* ==========================================================================
+   SHOTSY - ESTILOS CSS MODULES PARA PREVIAS
+   Directivas: UX Designer, Taste, Transitions y Web Artifacts Builder
+   ========================================================================== */
+
+/* Fondo Animado Interactivo de Alta Fidelidad (Acelerado por GPU) */
+.backgroundRoot {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.ambientMesh {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 36px 36px;
+  background-position: 0 0, 18px 18px;
+  opacity: 0.6;
+}
+
+[data-theme="light"] .ambientMesh {
+  background-image: 
+    radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    radial-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+}
+
+.orb1, .orb2, .orb3 {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  will-change: transform;
+}
+
+.orb1 {
+  width: 440px;
+  height: 440px;
+  top: -100px;
+  left: -80px;
+  background: radial-gradient(circle, var(--neon-purple) 0%, transparent 70%);
+  opacity: 0.35;
+  animation: floatOrb1 18s ease-in-out infinite alternate;
+}
+
+.orb2 {
+  width: 500px;
+  height: 500px;
+  bottom: -120px;
+  right: -100px;
+  background: radial-gradient(circle, var(--neon-pink) 0%, transparent 70%);
+  opacity: 0.3;
+  animation: floatOrb2 22s ease-in-out infinite alternate;
+}
+
+.orb3 {
+  width: 380px;
+  height: 380px;
+  top: 40%;
+  left: 30%;
+  background: radial-gradient(circle, var(--neon-cyan) 0%, transparent 70%);
+  opacity: 0.18;
+  animation: floatOrb3 25s ease-in-out infinite alternate;
+}
+
+[data-theme="light"] .orb1,
+[data-theme="light"] .orb2,
+[data-theme="light"] .orb3 {
+  opacity: 0.22;
+  filter: blur(100px);
+}
+
+@keyframes floatOrb1 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(80px, 120px, 0) scale(1.15);
+  }
+  100% {
+    transform: translate3d(-40px, 80px, 0) scale(0.9);
+  }
+}
+
+@keyframes floatOrb2 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-100px, -90px, 0) scale(1.1);
+  }
+  100% {
+    transform: translate3d(60px, -50px, 0) scale(0.95);
+  }
+}
+
+@keyframes floatOrb3 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.9);
+  }
+  50% {
+    transform: translate3d(-60px, 80px, 0) scale(1.2);
+  }
+  100% {
+    transform: translate3d(70px, -60px, 0) scale(1);
+  }
+}
+
+/* Contenedor Principal */
 .container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
   max-width: 960px;
   margin: 0 auto;
-  padding: 1.25rem;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-  gap: 2rem;
+  gap: 24px;
 }
 
-/* Header & Navegación */
+@media (min-width: 768px) {
+  .container {
+    padding: 24px 32px;
+    gap: 32px;
+  }
+}
+
+/* ==========================================================================
+   Header & Navegación
+   ========================================================================== */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 1rem;
-  background: rgba(21, 16, 41, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 16px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  font-size: 1.4rem;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  gap: 8px;
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: -0.025em;
   color: var(--text-primary);
+  user-select: none;
 }
 
 .logoAccent {
@@ -38,142 +166,265 @@
 .headerActions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 10px;
 }
 
-.socialLink {
+/* Botones Icono (Target Táctil >= 44x44px) */
+.iconBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 50%;
-  background: var(--bg-card);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
   color: var(--text-primary);
-  transition: all 0.2s ease;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease-tactile), border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  will-change: transform;
 }
 
-.socialLink:hover {
+.iconBtn:hover {
   border-color: var(--neon-cyan);
   color: var(--neon-cyan);
   box-shadow: var(--shadow-cyan);
   transform: translateY(-2px);
 }
 
+.iconBtn:active {
+  transform: scale(0.96);
+}
+
+.iconBtn:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 3px;
+}
+
+/* Botón VIP Header con Pulso Neón */
 .vipButton {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  background: linear-gradient(135deg, #ffb703, #fb8500);
-  color: #090614;
-  font-weight: 700;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  background: linear-gradient(135deg, #ffb703 0%, #fb8500 100%);
+  color: #07050f;
+  font-weight: 800;
   font-size: 0.85rem;
-  padding: 0.5rem 0.9rem;
-  border-radius: 999px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
   border: none;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 16px rgba(255, 183, 3, 0.4);
+  transition: transform 0.15s var(--ease-tactile), box-shadow 0.15s ease;
+  will-change: transform;
+  animation: vipPulse 3s ease-in-out infinite;
 }
 
 .vipButton:hover {
-  transform: scale(1.04);
-  box-shadow: 0 0 15px rgba(255, 183, 3, 0.5);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 24px rgba(255, 183, 3, 0.65);
 }
 
-/* Hero SEO Section */
+.vipButton:active {
+  transform: scale(0.96);
+}
+
+.vipButton:focus-visible {
+  outline: 2px solid var(--neon-gold);
+  outline-offset: 3px;
+}
+
+@keyframes vipPulse {
+  0%, 100% {
+    box-shadow: 0 0 14px rgba(255, 183, 3, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(255, 183, 3, 0.65);
+  }
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
 .hero {
   text-align: center;
-  padding: 1.5rem 1rem 0.5rem;
+  padding: 12px 8px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .badge {
-  display: inline-block;
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  background: rgba(255, 0, 127, 0.15);
+  letter-spacing: 0.08em;
+  background: rgba(255, 0, 127, 0.12);
   color: var(--neon-pink);
-  border: 1px solid rgba(255, 0, 127, 0.35);
-  margin-bottom: 0.85rem;
+  border: 1px solid rgba(255, 0, 127, 0.3);
+  box-shadow: 0 0 14px rgba(255, 0, 127, 0.2);
 }
 
 .title {
-  font-size: clamp(1.9rem, 5vw, 3rem);
+  font-size: clamp(1.85rem, 5vw, 2.75rem);
   font-weight: 900;
   line-height: 1.15;
-  margin-bottom: 0.75rem;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+  max-width: 680px;
+  margin: 0;
 }
 
 .subtitle {
   color: var(--text-muted);
-  font-size: 1rem;
-  max-width: 580px;
-  margin: 0 auto;
+  font-size: 0.98rem;
   line-height: 1.5;
+  max-width: 580px;
+  margin: 0;
 }
 
-/* Tabs de Herramientas / Plugins Básicos */
+/* Barra de Acciones Secundarias (Sugerir Reto) */
+.subBar {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.suggestPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.suggestPill:hover {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  transform: translateY(-1px);
+}
+
+.suggestPill:active {
+  transform: scale(0.97);
+}
+
+/* ==========================================================================
+   Tabs de Modo
+   ========================================================================== */
+.tabsContainer {
+  margin-top: 4px;
+}
+
 .tabs {
   display: flex;
   justify-content: center;
-  gap: 0.75rem;
+  gap: 12px;
 }
 
 .tabBtn {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.4rem;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 24px;
   border-radius: var(--radius-md);
-  background: var(--bg-card);
+  background: var(--bg-surface);
   color: var(--text-muted);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  font-weight: 700;
+  border: 1px solid var(--border-subtle);
+  font-weight: 800;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.15s var(--ease-tactile), background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  will-change: transform;
+}
+
+.tabBtn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.tabBtn:active {
+  transform: scale(0.96);
+}
+
+.tabBtn:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 3px;
 }
 
 .tabBtnActive {
-  background: rgba(255, 0, 127, 0.15);
+  background: rgba(255, 0, 127, 0.16);
   color: var(--text-primary);
   border-color: var(--neon-pink);
-  box-shadow: var(--shadow-pink);
+  box-shadow: 0 0 20px rgba(255, 0, 127, 0.35);
 }
 
-/* Grid de Categorías */
+/* ==========================================================================
+   Grid de Categorías
+   ========================================================================== */
 .categoriesGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 0.9rem;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin-top: 4px;
 }
 
 .categoryCard {
   position: relative;
-  background: var(--bg-card);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 1rem;
+  padding: 16px;
+  min-height: 84px;
   text-align: left;
   cursor: pointer;
-  transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 6px;
+  transition: transform 0.15s var(--ease-tactile), background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  will-change: transform;
 }
 
 .categoryCard:hover {
   background: var(--bg-card-hover);
+  border-color: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
 }
 
+.categoryCard:active {
+  transform: scale(0.97);
+}
+
+.categoryCard:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 3px;
+}
+
 .categoryCardActive {
+  background: rgba(0, 242, 254, 0.08);
   border-color: var(--neon-cyan);
-  box-shadow: var(--shadow-cyan);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
 }
 
 .categoryHeader {
@@ -183,261 +434,786 @@
 }
 
 .categoryName {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 1rem;
   color: var(--text-primary);
 }
 
 .categoryDesc {
-  font-size: 0.82rem;
+  font-size: 0.83rem;
   color: var(--text-muted);
-  line-height: 1.35;
+  line-height: 1.4;
+  margin: 0;
 }
 
 .vipTag {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 4px;
   font-size: 0.7rem;
   font-weight: 800;
-  padding: 0.2rem 0.5rem;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
   border-radius: 6px;
   background: rgba(255, 183, 3, 0.2);
   color: var(--neon-gold);
+  border: 1px solid rgba(255, 183, 3, 0.4);
 }
 
-/* Zona de Carta Interactiva */
+/* ==========================================================================
+   Zona de Carta Interactiva (Neon Glow + No Repetición en Sesión)
+   ========================================================================== */
 .deckSection {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+/* Badge de Progreso de Sesión (No Repetición) */
+.sessionProgress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.progressDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--neon-cyan);
+  box-shadow: 0 0 8px var(--neon-cyan);
+}
+
+.gameCardWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  min-height: 290px;
+  border-radius: var(--radius-lg);
+  padding: 2px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 0, 127, 0.25);
+  display: flex;
+  background: rgba(255, 0, 127, 0.1);
+}
+
+.gameCardWrapper::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 120deg,
+    var(--neon-pink) 180deg,
+    var(--neon-purple) 240deg,
+    var(--neon-cyan) 300deg,
+    transparent 360deg
+  );
+  animation: rotateNeonBorder 4.5s linear infinite;
+  will-change: transform;
+}
+
+@keyframes rotateNeonBorder {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .gameCard {
+  position: relative;
+  z-index: 2;
   width: 100%;
-  max-width: 440px;
-  min-height: 270px;
-  background: linear-gradient(160deg, #1b1336 0%, #100b21 100%);
-  border: 2px solid var(--neon-pink);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-pink);
-  padding: 2rem 1.5rem;
+  border-radius: calc(var(--radius-lg) - 2px);
+  background: linear-gradient(165deg, var(--bg-surface-elevated) 0%, var(--bg-surface) 100%);
+  padding: 28px 24px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  position: relative;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.gameCardReveal {
+  animation: cardScaleIn 0.3s var(--ease-spring) forwards;
+}
+
+@keyframes cardScaleIn {
+  from {
+    opacity: 0.65;
+    transform: scale(0.96) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.cardShimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 4;
+  overflow: hidden;
+}
+
+.cardShimmer::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -100%;
+  width: 60%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 35%,
+    rgba(0, 242, 254, 0.35) 50%,
+    rgba(255, 0, 127, 0.25) 65%,
+    transparent 100%
+  );
+  transform: rotate(25deg);
+  animation: shimmerSweep 0.65s var(--ease-spring) forwards;
+  will-change: transform;
+}
+
+@keyframes shimmerSweep {
+  0% {
+    transform: translateX(0%) rotate(25deg);
+    opacity: 0;
+  }
+  25% { opacity: 1; }
+  100% {
+    transform: translateX(380%) rotate(25deg);
+    opacity: 0;
+  }
 }
 
 .cardType {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 0.08em;
   font-weight: 800;
   color: var(--neon-cyan);
+  text-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
 }
 
 .cardText {
   font-size: 1.35rem;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.4;
-  margin: 1.2rem 0;
+  margin: 20px 0;
+  color: var(--text-primary);
+  text-wrap: balance;
 }
 
 .penaltyBadge {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 8px;
   background: rgba(0, 242, 254, 0.12);
   color: var(--neon-cyan);
-  border: 1px solid rgba(0, 242, 254, 0.3);
-  padding: 0.4rem 0.9rem;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  font-weight: 700;
+  border: 1px solid rgba(0, 242, 254, 0.35);
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  box-shadow: 0 0 14px rgba(0, 242, 254, 0.25);
 }
 
 .nextButton {
-  background: linear-gradient(90deg, var(--neon-pink), var(--neon-purple));
-  color: #fff;
+  min-height: 52px;
+  min-width: 220px;
+  background: linear-gradient(90deg, var(--neon-pink) 0%, var(--neon-purple) 100%);
+  color: #ffffff;
   border: none;
-  padding: 0.95rem 2.2rem;
+  padding: 0 32px;
   font-size: 1rem;
-  font-weight: 800;
-  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-pill);
   cursor: pointer;
-  box-shadow: var(--shadow-pink);
-  transition: transform 0.15s ease;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  gap: 8px;
+  animation: neonPulse 2.8s ease-in-out infinite;
+  transition: transform 0.12s var(--ease-tactile), filter 0.12s ease;
+  will-change: transform, box-shadow;
+}
+
+.nextButton:hover {
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.08);
 }
 
 .nextButton:active {
   transform: scale(0.96);
 }
 
-/* Zona de Ruleta */
+.nextButton:focus-visible {
+  outline: 2px solid var(--neon-pink);
+  outline-offset: 4px;
+}
+
+.nextButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  animation: none;
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 0 0 16px rgba(255, 0, 127, 0.45), 0 0 32px rgba(138, 43, 226, 0.2);
+    transform: translateY(0);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(255, 0, 127, 0.75), 0 0 52px rgba(138, 43, 226, 0.45);
+    transform: translateY(-1px);
+  }
+}
+
+/* ==========================================================================
+   Ruleta de Shots con Configuración de Participantes
+   ========================================================================== */
 .wheelSection {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 20px;
+  margin-top: 8px;
 }
 
+/* Panel de Configuración de Participantes */
+.playersConfigBox {
+  width: 100%;
+  max-width: 480px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.playersConfigTitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--neon-cyan);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.playerInputRow {
+  display: flex;
+  gap: 8px;
+}
+
+.playerInput {
+  flex: 1;
+  min-height: 48px;
+  background: var(--input-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0 16px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.playerInput:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
+}
+
+.addPlayerBtn {
+  min-height: 48px;
+  padding: 0 20px;
+  background: var(--neon-cyan);
+  color: #07050f;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.12s var(--ease-tactile), filter 0.12s ease;
+}
+
+.addPlayerBtn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.addPlayerBtn:active {
+  transform: scale(0.96);
+}
+
+.playersListContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 160px;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+
+.playerChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 242, 254, 0.12);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.removeChipBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 0.75rem;
+  line-height: 1;
+  transition: background 0.15s ease;
+}
+
+.removeChipBtn:hover {
+  background: var(--neon-red);
+}
+
+.generateWheelBtn {
+  min-height: 50px;
+  background: linear-gradient(90deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-weight: 900;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.12s var(--ease-tactile), box-shadow 0.15s ease;
+}
+
+.generateWheelBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.45);
+}
+
+.generateWheelBtn:active {
+  transform: scale(0.96);
+}
+
+/* Área de Juego de la Ruleta */
 .wheelWrapper {
   position: relative;
-  width: 290px;
-  height: 290px;
+  width: 300px;
+  height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.wheelRing {
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  border: 2px dashed rgba(0, 242, 254, 0.4);
+  box-shadow: 0 0 24px rgba(0, 242, 254, 0.25), inset 0 0 14px rgba(255, 0, 127, 0.2);
+  pointer-events: none;
+  animation: ringRotate 24s linear infinite;
+  will-change: transform;
+}
+
+@keyframes ringRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.wheelRingSpinning {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 35px var(--neon-cyan), 0 0 60px rgba(255, 0, 127, 0.65), inset 0 0 25px var(--neon-pink);
+  animation: ringRotateFast 1.2s linear infinite, ringStrobe 0.25s ease-in-out infinite alternate;
+}
+
+@keyframes ringRotateFast {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ringStrobe {
+  0% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 10px var(--neon-cyan));
+  }
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 25px var(--neon-pink));
+  }
+}
+
 .wheelPointer {
   position: absolute;
-  top: -14px;
+  top: -16px;
   z-index: 10;
   width: 0;
   height: 0;
   border-left: 14px solid transparent;
   border-right: 14px solid transparent;
   border-top: 26px solid var(--neon-gold);
-  filter: drop-shadow(0 0 8px rgba(255, 183, 3, 0.8));
+  filter: drop-shadow(0 0 10px rgba(255, 183, 3, 0.9));
+  animation: pointerPulse 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes pointerPulse {
+  0% {
+    filter: drop-shadow(0 0 6px rgba(255, 183, 3, 0.7));
+    transform: translateY(0);
+  }
+  100% {
+    filter: drop-shadow(0 0 14px rgba(255, 183, 3, 1));
+    transform: translateY(-2px);
+  }
 }
 
 .wheel {
+  position: relative;
   width: 100%;
   height: 100%;
   border-radius: 50%;
   border: 5px solid #ffffff;
-  box-shadow: 0 0 25px rgba(255, 0, 127, 0.5);
-  background: conic-gradient(
-    #ff007f 0deg 60deg,
-    #8a2be2 60deg 120deg,
-    #00f2fe 120deg 180deg,
-    #ff0844 180deg 240deg,
-    #ffb703 240deg 300deg,
-    #151029 300deg 360deg
-  );
+  box-shadow: 0 0 30px rgba(255, 0, 127, 0.5), inset 0 0 15px rgba(0, 0, 0, 0.6);
   transition: transform 3.6s cubic-bezier(0.15, 0.85, 0.25, 1);
+  will-change: transform;
+  overflow: hidden;
+}
+
+.wheelCenterCap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 3px solid var(--neon-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(255, 183, 3, 0.6);
+  z-index: 6;
+  font-weight: 900;
+  font-size: 0.75rem;
+  color: var(--neon-gold);
 }
 
 .wheelResultBox {
-  background: var(--bg-card);
+  background: var(--bg-surface);
   border: 1px solid var(--neon-cyan);
   border-radius: var(--radius-md);
-  padding: 1rem 1.5rem;
+  padding: 16px 24px;
   text-align: center;
-  max-width: 400px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.25);
 }
 
 .wheelResultTitle {
   font-size: 0.8rem;
   color: var(--neon-cyan);
   text-transform: uppercase;
-  font-weight: 700;
-  margin-bottom: 0.3rem;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+  margin-bottom: 6px;
 }
 
 .wheelResultText {
-  font-size: 1.2rem;
-  font-weight: 800;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--text-primary);
 }
 
-/* Sección SEO informativa */
-.seoSection {
-  margin-top: 1rem;
-  padding: 1.5rem;
-  background: rgba(21, 16, 41, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-lg);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.25rem;
-}
-
-.seoArticle h2 {
-  font-size: 1.05rem;
-  color: var(--neon-cyan);
-  margin-bottom: 0.4rem;
-}
-
-.seoArticle p {
+.modifyPlayersBtn {
+  min-height: 44px;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 0 18px;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
   font-size: 0.88rem;
-  color: var(--text-muted);
-  line-height: 1.5;
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
-/* Modal VIP */
+.modifyPlayersBtn:hover {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+}
+
+/* ==========================================================================
+   Modales (VIP & Sugerencias de Retos)
+   ========================================================================== */
 .modalOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(9, 6, 20, 0.85);
-  backdrop-filter: blur(6px);
+  background: rgba(7, 5, 15, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  z-index: 50;
+  padding: 16px;
+  z-index: 100;
+  animation: modalFadeIn 0.22s ease-out forwards;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modalContent {
-  background: var(--bg-card);
+  background: var(--bg-surface);
   border: 2px solid var(--neon-gold);
   border-radius: var(--radius-lg);
-  padding: 1.75rem;
-  max-width: 400px;
+  padding: 28px 24px;
+  max-width: 440px;
   width: 100%;
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
+  box-shadow: 0 0 35px rgba(255, 183, 3, 0.35), 0 20px 40px rgba(0, 0, 0, 0.8);
+  animation: modalScaleIn 0.28s var(--ease-spring) forwards;
+  will-change: transform, opacity;
+  max-height: 90dvh;
+  overflow-y: auto;
+}
+
+.suggestModalContent {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 35px rgba(0, 242, 254, 0.35), 0 20px 40px rgba(0, 0, 0, 0.8);
+}
+
+@keyframes modalScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .modalTitle {
-  font-size: 1.4rem;
-  font-weight: 800;
+  font-size: 1.45rem;
+  font-weight: 900;
   color: var(--neon-gold);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.suggestModalTitle {
+  color: var(--neon-cyan);
+}
+
+.modalDesc {
+  font-size: 0.94rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin: 0;
 }
 
 .modalList {
   list-style: none;
   text-align: left;
-  font-size: 0.9rem;
-  color: var(--text-muted);
+  font-size: 0.92rem;
+  color: var(--text-primary);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.modalList li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Formulario de Sugerencias */
+.suggestForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+.formLabel {
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.formSelect, .formTextarea {
+  width: 100%;
+  background: var(--input-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  color: var(--text-primary);
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.formSelect:focus, .formTextarea:focus {
+  border-color: var(--neon-cyan);
+}
+
+.formTextarea {
+  min-height: 84px;
+  resize: vertical;
+}
+
+.suggestQuotaBox {
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background: rgba(0, 242, 254, 0.08);
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  font-size: 0.84rem;
+  color: var(--neon-cyan);
+  font-weight: 700;
+  text-align: center;
+}
+
+.suggestQuotaVip {
+  background: rgba(255, 183, 3, 0.12);
+  border-color: rgba(255, 183, 3, 0.4);
+  color: var(--neon-gold);
 }
 
 .closeModalBtn {
+  min-height: 44px;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-subtle);
   color: var(--text-primary);
-  padding: 0.65rem;
+  padding: 0 16px;
   border-radius: var(--radius-md);
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: transform 0.12s var(--ease-tactile), background 0.12s ease;
+  will-change: transform;
 }
 
-/* Footer */
+.closeModalBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.closeModalBtn:active {
+  transform: scale(0.96);
+}
+
+/* ==========================================================================
+   Sección SEO Informativa & Footer
+   ========================================================================== */
+.seoSection {
+  margin-top: 16px;
+  padding: 24px;
+  background: var(--glass-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.seoArticle h2 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--neon-cyan);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.seoArticle p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
 .footer {
   margin-top: auto;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 24px;
+  border-top: 1px solid var(--border-subtle);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  font-size: 0.82rem;
+  gap: 16px;
+  font-size: 0.85rem;
   color: var(--text-muted);
 }
 
 .footerSocials {
   display: flex;
-  gap: 1rem;
+  gap: 16px;
+}
+
+.footerLink {
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.footerLink:hover {
+  color: var(--neon-cyan);
 }

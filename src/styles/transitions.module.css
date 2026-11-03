@@ -1,0 +1,40 @@
+/* Entradas y salidas de modales */
+.scaleIn {
+  animation: scaleIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+/* Efecto táctil para botones */
+.pressEffect {
+  transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), filter 0.12s ease;
+}
+
+.pressEffect:active {
+  transform: scale(0.95);
+  filter: brightness(0.9);
+}
+
+/* Volteo de carta en 3D */
+.flipCard {
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
