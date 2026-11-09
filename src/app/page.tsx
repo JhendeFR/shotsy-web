@@ -28,6 +28,7 @@ import {
 import PayPalCheckout from '@/components/PayPalCheckout';
 import { supabase, Category, Challenge, UserProfile } from '@/lib/supabase';
 import { INITIAL_CATEGORIES, ALL_CHALLENGES } from '@/lib/challenges-data';
+import { trackEvent } from '@/lib/analytics';
 import styles from './page.module.css';
 
 // SVG Nativos de Redes Sociales (Web Artifacts Builder)
@@ -339,8 +340,15 @@ export default function HomePage() {
 
   // Selección de categoría
   const handleSelectCategory = (cat: Category) => {
+    trackEvent('select_category', {
+      category_name: cat.name,
+      slug: cat.slug,
+      is_vip: cat.is_vip,
+    });
+
     const isVip = userProfile?.is_vip || localStorage.getItem('shotsy_is_vip') === 'true';
     if (cat.is_vip && !isVip) {
+      trackEvent('view_vip_modal', { trigger_source: 'locked_category' });
       if (!currentUser) {
         setAuthReason('vip');
         setShowAuthModal(true);
@@ -358,6 +366,12 @@ export default function HomePage() {
 
   // Siguiente carta sin repetir
   const handleNextCard = () => {
+    trackEvent('draw_card', {
+      category_name: selectedCategory.name,
+      challenge_type: currentChallenge.type,
+      penalty: currentChallenge.drinks_penalty,
+    });
+
     const { card, updatedDeck } = getNextCardFromDeck(selectedCategory.id, decks);
     setCurrentChallenge(card);
     setDecks((prev) => ({ ...prev, [selectedCategory.id]: updatedDeck }));
@@ -400,6 +414,7 @@ export default function HomePage() {
     if (isSpinning || participants.length < 2) return;
     setIsSpinning(true);
     setWheelResult('Girando la ruleta...');
+    trackEvent('spin_roulette');
 
     const extraSpins = 5 * 360;
     const randomAngle = Math.floor(Math.random() * 360);
@@ -414,9 +429,11 @@ export default function HomePage() {
 
       const penaltyIndex = Math.floor(Math.random() * WHEEL_PENALTIES.length);
       const chosenPenalty = WHEEL_PENALTIES[penaltyIndex];
+      const outcome = `¡Le toca a ${winner}! 👉 ${chosenPenalty}`;
 
-      setWheelResult(`¡Le toca a ${winner}! 👉 ${chosenPenalty}`);
+      setWheelResult(outcome);
       setIsSpinning(false);
+      trackEvent('spin_roulette', { outcome });
 
       confetti({
         particleCount: 75,
@@ -528,6 +545,7 @@ export default function HomePage() {
   };
 
   const handleOpenVipModal = () => {
+    trackEvent('view_vip_modal', { trigger_source: 'header_button' });
     if (!currentUser) {
       setAuthReason('vip');
       setShowAuthModal(true);
@@ -847,7 +865,12 @@ export default function HomePage() {
                 className={`${styles.tabBtn} ${
                   activeTab === 'cartas' ? styles.tabBtnActive : ''
                 }`}
-                onClick={() => setActiveTab('cartas')}
+                onClick={() => {
+                  if (activeTab !== 'cartas') {
+                    trackEvent('switch_tab', { tab_name: 'cartas' });
+                  }
+                  setActiveTab('cartas');
+                }}
               >
                 <Sparkles size={18} aria-hidden="true" />
                 <span>Mazo de Retos</span>
@@ -861,6 +884,9 @@ export default function HomePage() {
                   activeTab === 'ruleta' ? styles.tabBtnActive : ''
                 }`}
                 onClick={() => {
+                  if (activeTab !== 'ruleta') {
+                    trackEvent('switch_tab', { tab_name: 'ruleta' });
+                  }
                   setActiveTab('ruleta');
                   setIsWheelReady(false);
                 }}
