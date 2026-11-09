@@ -7,6 +7,11 @@ export const metadata: Metadata = {
   title: 'Shotsy | Ruleta y Retos para Previas y Amigos',
   description: 'La mejor web app de juegos para beber, Yo Nunca, Verdad o Reto y Ruleta de castigos directo desde tu celular.',
   keywords: ['juegos para previas', 'ruleta de shots', 'yo nunca online', 'verdad o reto picante', 'shotsy'],
+
+  verification: {
+    google: 'ci5PABw_dmGmQf3cbIzqK8JOAstX-9orJsikB22U7bg',
+  },
+
   openGraph: {
     title: 'Shotsy | Enciende la Previa',
     description: 'Juega a la ruleta y destapa los retos más extremos con tus amigos desde el navegador.',
