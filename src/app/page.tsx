@@ -19,13 +19,25 @@ import {
   LogIn,
   LogOut,
   Play,
+  Share2,
+  Copy,
+  MessageCircle,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
+import PayPalCheckout from '@/components/PayPalCheckout';
 import { supabase, Category, Challenge, UserProfile } from '@/lib/supabase';
 import { INITIAL_CATEGORIES, ALL_CHALLENGES } from '@/lib/challenges-data';
 import styles from './page.module.css';
 
 // SVG Nativos de Redes Sociales (Web Artifacts Builder)
-function InstagramIcon({ size = 20 }: { size?: number }) {
+interface SvgIconProps {
+  size?: number;
+  style?: React.CSSProperties;
+  className?: string;
+}
+
+function InstagramIcon({ size = 20, style, className }: SvgIconProps) {
   return (
     <svg
       width={size}
@@ -37,6 +49,8 @@ function InstagramIcon({ size = 20 }: { size?: number }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
+      style={style}
+      className={className}
     >
       <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
@@ -45,7 +59,7 @@ function InstagramIcon({ size = 20 }: { size?: number }) {
   );
 }
 
-function FacebookIcon({ size = 20 }: { size?: number }) {
+function FacebookIcon({ size = 20, style, className }: SvgIconProps) {
   return (
     <svg
       width={size}
@@ -53,8 +67,42 @@ function FacebookIcon({ size = 20 }: { size?: number }) {
       viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden="true"
+      style={style}
+      className={className}
     >
       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+    </svg>
+  );
+}
+
+function WhatsAppIcon({ size = 20, style, className }: SvgIconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      style={style}
+      className={className}
+    >
+      <path d="M12.031 0C5.396 0 .029 5.367.029 11.987c0 2.108.549 4.167 1.594 5.975L0 24l6.208-1.626a11.952 11.952 0 0 0 5.823 1.513h.005c6.632 0 12-5.367 12-11.988 0-3.203-1.246-6.216-3.512-8.482C18.258 1.251 15.245 0 12.031 0zm0 21.893h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.999-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c0-5.467 4.449-9.916 9.916-9.916 2.648 0 5.138 1.032 7.012 2.906a9.855 9.855 0 0 1 2.905 7.01c0 5.468-4.449 9.918-9.909 9.918zm5.435-7.422c-.298-.149-1.763-.87-2.036-.97-.273-.099-.471-.149-.67.15-.198.298-.769.97-.942 1.168-.174.199-.348.224-.646.075-.298-.149-1.258-.464-2.396-1.48a8.966 8.966 0 0 1-1.658-2.062c-.174-.298-.019-.459.13-.608.134-.134.298-.348.447-.522.149-.174.199-.298.298-.497.099-.199.05-.373-.025-.522-.075-.149-.67-1.616-.918-2.213-.242-.581-.487-.502-.67-.512l-.571-.01c-.199 0-.522.075-.795.373-.273.298-1.043 1.02-1.043 2.487 0 1.467 1.068 2.885 1.217 3.084.149.199 2.102 3.21 5.093 4.502.712.308 1.268.492 1.701.63.715.228 1.365.196 1.88.119.574-.086 1.763-.72 2.012-1.416.248-.696.248-1.292.174-1.416-.075-.124-.273-.199-.571-.348z" />
+    </svg>
+  );
+}
+
+function XTwitterIcon({ size = 20, style, className }: SvgIconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      style={style}
+      className={className}
+    >
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
     </svg>
   );
 }
@@ -81,6 +129,15 @@ function GoogleLogoSvg() {
     </svg>
   );
 }
+
+// Configuración de Soporte WhatsApp Oficial (Protegido por login)
+const RAW_WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP_PHONE || '74435553';
+const CLEAN_WHATSAPP = RAW_WHATSAPP.replace(/\D/g, '');
+const FORMATTED_WHATSAPP =
+  CLEAN_WHATSAPP.length === 8 ? `591${CLEAN_WHATSAPP}` : CLEAN_WHATSAPP;
+const WHATSAPP_SUPPORT_URL = `https://wa.me/${FORMATTED_WHATSAPP}?text=${encodeURIComponent(
+  '¡Hola Shotsy! Necesito soporte con la web app / pase VIP.'
+)}`;
 
 function shuffleArray<T>(array: T[]): T[] {
   const arr = [...array];
@@ -136,15 +193,21 @@ export default function HomePage() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
-  const [authReason, setAuthReason] = useState<'vip' | 'suggest' | 'general'>('general');
+  const [authReason, setAuthReason] = useState<'vip' | 'suggest' | 'whatsapp' | 'general'>('general');
   const [authEmail, setAuthEmail] = useState<string>('');
   const [authPassword, setAuthPassword] = useState<string>('');
+  const [authConfirmPassword, setAuthConfirmPassword] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
   const [authLoading, setAuthLoading] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string>('');
 
   // Modales
   const [showVipModal, setShowVipModal] = useState<boolean>(false);
   const [showSuggestModal, setShowSuggestModal] = useState<boolean>(false);
+  const [showShareModal, setShowShareModal] = useState<boolean>(false);
+  const [showChatModal, setShowChatModal] = useState<boolean>(false);
+  const [isCopied, setIsCopied] = useState<boolean>(false);
   const [suggestCount, setSuggestCount] = useState<number>(0);
   const [suggestSuccess, setSuggestSuccess] = useState<boolean>(false);
   const [suggestForm, setSuggestForm] = useState({
@@ -378,7 +441,16 @@ export default function HomePage() {
       if (error) throw error;
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Error al conectar con Google';
-      setAuthError(message);
+      if (
+        message.toLowerCase().includes('not enabled') ||
+        message.toLowerCase().includes('unsupported provider')
+      ) {
+        setAuthError(
+          'Google Auth aún no está activado en tu panel de Supabase. Mientras lo habilitas, puedes iniciar sesión o registrarte con correo y contraseña.'
+        );
+      } else {
+        setAuthError(message);
+      }
     } finally {
       setAuthLoading(false);
     }
@@ -388,6 +460,14 @@ export default function HomePage() {
     e.preventDefault();
     setAuthLoading(true);
     setAuthError('');
+
+    if (authMode === 'register') {
+      if (authPassword !== authConfirmPassword) {
+        setAuthError('Las contraseñas no coinciden. Asegúrate de escribirlas idénticas.');
+        setAuthLoading(false);
+        return;
+      }
+    }
 
     try {
       if (authMode === 'login') {
@@ -402,6 +482,9 @@ export default function HomePage() {
           setShowAuthModal(false);
           if (authReason === 'vip') setShowVipModal(true);
           if (authReason === 'suggest') setShowSuggestModal(true);
+          if (authReason === 'whatsapp') {
+            window.open(WHATSAPP_SUPPORT_URL, '_blank', 'noopener,noreferrer');
+          }
         }
       } else {
         const { error, data } = await supabase.auth.signUp({
@@ -415,6 +498,9 @@ export default function HomePage() {
           alert('¡Cuenta creada exitosamente!');
           if (authReason === 'vip') setShowVipModal(true);
           if (authReason === 'suggest') setShowSuggestModal(true);
+          if (authReason === 'whatsapp') {
+            window.open(WHATSAPP_SUPPORT_URL, '_blank', 'noopener,noreferrer');
+          }
         }
       }
     } catch (err: unknown) {
@@ -448,6 +534,17 @@ export default function HomePage() {
       return;
     }
     setShowVipModal(true);
+  };
+
+  // Soporte WhatsApp (Requiere autenticación previa obligatoria)
+  const handleOpenWhatsApp = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    if (!currentUser) {
+      setAuthReason('whatsapp');
+      setShowAuthModal(true);
+      return;
+    }
+    window.open(WHATSAPP_SUPPORT_URL, '_blank', 'noopener,noreferrer');
   };
 
   const handleSendSuggestion = async (e: React.FormEvent) => {
@@ -490,6 +587,57 @@ export default function HomePage() {
 
   const isVip = Boolean(userProfile?.is_vip || (typeof window !== 'undefined' && localStorage.getItem('shotsy_is_vip') === 'true'));
 
+  // Texto y métodos para Compartir Reto en Redes Sociales
+  const shareChallengeText = useMemo(() => {
+    return `🔥 ¡Reto de Shotsy para la previa! 🍻\n\n"${currentChallenge.content}"\n\nPenitencia: ${currentChallenge.drinks_penalty} trago(s).\n\n👉 ¡Juega gratis desde tu celular en https://shotsy-web.vercel.app!`;
+  }, [currentChallenge]);
+
+  const handleCopyShareText = async () => {
+    try {
+      await navigator.clipboard.writeText(shareChallengeText);
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2500);
+    } catch {
+      // Portapapeles no disponible
+    }
+  };
+
+  const handleNativeShare = async () => {
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Shotsy Game | Reto de Previa',
+          text: shareChallengeText,
+          url: 'https://shotsy-web.vercel.app',
+        });
+      } catch {
+        // Ignorar cancelación del usuario
+      }
+    }
+  };
+
+  // Apertura de Chat en Vivo Tawk.to estilizado
+  const handleOpenLiveChat = () => {
+    if (typeof window !== 'undefined') {
+      const win = window as unknown as {
+        Tawk_API?: {
+          showWidget?: () => void;
+          maximize?: () => void;
+        };
+      };
+      if (win.Tawk_API && typeof win.Tawk_API.maximize === 'function') {
+        try {
+          win.Tawk_API.showWidget?.();
+          win.Tawk_API.maximize?.();
+          return;
+        } catch {
+          // fallback al enlace directo
+        }
+      }
+      window.open('https://tawk.to/chat/6aea1f46514dbd3c354cb2d0/1k6h8kb6p', '_blank');
+    }
+  };
+
   // Accesibilidad: Tecla Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -497,6 +645,8 @@ export default function HomePage() {
         setShowVipModal(false);
         setShowSuggestModal(false);
         setShowAuthModal(false);
+        setShowShareModal(false);
+        setShowChatModal(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -559,13 +709,13 @@ export default function HomePage() {
               {theme === 'dark' ? <Sun size={19} /> : <Moon size={19} />}
             </button>
 
-            {/* Redes Sociales */}
+            {/* Redes Sociales (visibles en desktop y en footer para mobile) */}
             <a
               href="https://www.instagram.com/shotsygamesbo/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram oficial de Shotsy"
-              className={styles.iconBtn}
+              className={`${styles.iconBtn} ${styles.headerSocialLink}`}
             >
               <InstagramIcon size={19} />
             </a>
@@ -574,52 +724,85 @@ export default function HomePage() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook oficial de Shotsy"
-              className={styles.iconBtn}
+              className={`${styles.iconBtn} ${styles.headerSocialLink}`}
             >
               <FacebookIcon size={19} />
             </a>
 
-            {/* Login / Usuario */}
-            {currentUser ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span className={styles.userBadge}>
-                  {currentUser.email?.split('@')[0]}
-                  {isVip && <Crown size={13} color="#ffb703" />}
-                </span>
+            {/* Usuario VIP: Se sustituye el botón anterior por el botón ultra llamativo con corona y nombre */}
+            {isVip ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <button
                   type="button"
-                  className={styles.iconBtn}
-                  onClick={handleLogout}
-                  title="Cerrar Sesión"
-                  aria-label="Cerrar Sesión"
+                  className={styles.vipUserPillBtn}
+                  onClick={handleOpenVipModal}
+                  title="Miembro VIP Activo de Shotsy"
+                  aria-label={`Usuario VIP ${currentUser?.email?.split('@')[0] || 'Activo'}`}
                 >
-                  <LogOut size={16} />
+                  <span className={styles.vipCrownBadge}>
+                    <Crown size={18} color="#ffd700" fill="#ffd700" />
+                  </span>
+                  <span className={styles.vipUserNameText}>
+                    {currentUser?.email?.split('@')[0] || 'VIP'}
+                  </span>
+                  <span className={styles.vipActiveSparkle}>VIP</span>
                 </button>
+                {currentUser && (
+                  <button
+                    type="button"
+                    className={styles.iconBtn}
+                    onClick={handleLogout}
+                    title="Cerrar Sesión"
+                    aria-label="Cerrar Sesión"
+                  >
+                    <LogOut size={16} />
+                  </button>
+                )}
               </div>
             ) : (
-              <button
-                type="button"
-                className={styles.authBtn}
-                onClick={() => {
-                  setAuthReason('general');
-                  setShowAuthModal(true);
-                }}
-              >
-                <LogIn size={15} />
-                <span>Ingresar</span>
-              </button>
-            )}
+              <>
+                {/* Usuario no VIP: Botón de Login o Badge simple */}
+                {currentUser ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span className={styles.userBadge}>
+                      {currentUser.email?.split('@')[0]}
+                    </span>
+                    <button
+                      type="button"
+                      className={styles.iconBtn}
+                      onClick={handleLogout}
+                      title="Cerrar Sesión"
+                      aria-label="Cerrar Sesión"
+                    >
+                      <LogOut size={16} />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    className={styles.authBtn}
+                    onClick={() => {
+                      setAuthReason('general');
+                      setShowAuthModal(true);
+                    }}
+                  >
+                    <LogIn size={15} />
+                    <span>Ingresar</span>
+                  </button>
+                )}
 
-            {/* Botón Pase VIP */}
-            <button
-              type="button"
-              className={styles.vipButton}
-              onClick={handleOpenVipModal}
-              aria-label="Abrir modal del Pase VIP"
-            >
-              <Crown size={16} aria-hidden="true" />
-              <span>{isVip ? 'VIP Activo' : 'Pase VIP ($0.99)'}</span>
-            </button>
+                {/* Botón Pase VIP: Sólo visible cuando el usuario NO es VIP */}
+                <button
+                  type="button"
+                  className={styles.vipButton}
+                  onClick={handleOpenVipModal}
+                  aria-label="Abrir modal del Pase VIP"
+                >
+                  <Crown size={16} aria-hidden="true" />
+                  <span>Pase VIP ($0.99)</span>
+                </button>
+              </>
+            )}
           </div>
         </header>
 
@@ -743,15 +926,27 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  className={styles.nextButton}
-                  onClick={handleNextCard}
-                  aria-label="Ver siguiente carta de reto"
-                >
-                  <Shuffle size={18} aria-hidden="true" />
-                  <span>Siguiente Carta</span>
-                </button>
+                <div className={styles.cardButtonsRow}>
+                  <button
+                    type="button"
+                    className={styles.nextButton}
+                    onClick={handleNextCard}
+                    aria-label="Ver siguiente carta de reto"
+                  >
+                    <Shuffle size={18} aria-hidden="true" />
+                    <span>Siguiente Carta</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className={styles.shareButton}
+                    onClick={() => setShowShareModal(true)}
+                    aria-label="Compartir este reto en redes sociales"
+                  >
+                    <Share2 size={18} aria-hidden="true" />
+                    <span>Compartir Reto</span>
+                  </button>
+                </div>
               </section>
             </>
           ) : (
@@ -950,6 +1145,8 @@ export default function HomePage() {
                   ? 'Debes iniciar sesión para activar y vincular tu Pase VIP ($0.99 USD).'
                   : authReason === 'suggest'
                   ? 'Debes iniciar sesión para enviar sugerencias de retos a la comunidad.'
+                  : authReason === 'whatsapp'
+                  ? 'Debes iniciar sesión para comunicarte con soporte oficial por WhatsApp.'
                   : 'Ingresa para guardar tu progreso y retos favoritos.'}
               </p>
 
@@ -971,14 +1168,20 @@ export default function HomePage() {
                 <button
                   type="button"
                   className={`${styles.authTabBtn} ${authMode === 'login' ? styles.authTabBtnActive : ''}`}
-                  onClick={() => setAuthMode('login')}
+                  onClick={() => {
+                    setAuthMode('login');
+                    setAuthError('');
+                  }}
                 >
                   Ya tengo cuenta
                 </button>
                 <button
                   type="button"
                   className={`${styles.authTabBtn} ${authMode === 'register' ? styles.authTabBtnActive : ''}`}
-                  onClick={() => setAuthMode('register')}
+                  onClick={() => {
+                    setAuthMode('register');
+                    setAuthError('');
+                  }}
                 >
                   Crear cuenta
                 </button>
@@ -1004,15 +1207,51 @@ export default function HomePage() {
 
                 <div>
                   <label className={styles.formLabel}>Contraseña</label>
-                  <input
-                    type="password"
-                    className={styles.formInput}
-                    value={authPassword}
-                    onChange={(e) => setAuthPassword(e.target.value)}
-                    required
-                    minLength={6}
-                  />
+                  <div className={styles.passwordFieldWrapper}>
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      className={styles.formInput}
+                      value={authPassword}
+                      onChange={(e) => setAuthPassword(e.target.value)}
+                      required
+                      minLength={6}
+                    />
+                    <button
+                      type="button"
+                      className={styles.togglePasswordBtn}
+                      onClick={() => setShowPassword(!showPassword)}
+                      aria-label={showPassword ? 'Ocultar contraseña' : 'Ver contraseña'}
+                      title={showPassword ? 'Ocultar contraseña' : 'Ver contraseña'}
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
                 </div>
+
+                {authMode === 'register' && (
+                  <div>
+                    <label className={styles.formLabel}>Repetir Contraseña</label>
+                    <div className={styles.passwordFieldWrapper}>
+                      <input
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        className={styles.formInput}
+                        value={authConfirmPassword}
+                        onChange={(e) => setAuthConfirmPassword(e.target.value)}
+                        required
+                        minLength={6}
+                      />
+                      <button
+                        type="button"
+                        className={styles.togglePasswordBtn}
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        aria-label={showConfirmPassword ? 'Ocultar contraseña' : 'Ver contraseña'}
+                        title={showConfirmPassword ? 'Ocultar contraseña' : 'Ver contraseña'}
+                      >
+                        {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 <button
                   type="submit"
@@ -1073,11 +1312,11 @@ export default function HomePage() {
                   <span>Sugerencias de retos ilimitadas en la comunidad</span>
                 </li>
               </ul>
-              <button
-                type="button"
-                className={styles.vipButton}
-                style={{ justifyContent: 'center', width: '100%' }}
-                onClick={async () => {
+              {/* Integración Oficial de Pago PayPal */}
+              <PayPalCheckout
+                amount="0.99"
+                onOpenWhatsApp={handleOpenWhatsApp}
+                onSuccess={async (_details) => {
                   if (currentUser) {
                     try {
                       await supabase.from('profiles').upsert({
@@ -1090,13 +1329,45 @@ export default function HomePage() {
                     }
                   }
                   localStorage.setItem('shotsy_is_vip', 'true');
-                  setUserProfile((prev) => prev ? { ...prev, is_vip: true } : { id: currentUser?.id || 'vip', email: currentUser?.email || '', is_vip: true, is_banned: false, role: 'user' });
-                  setShowVipModal(false);
-                  alert('¡Pase VIP activado con éxito para tu cuenta ($0.99 USD)!');
+                  setUserProfile((prev) =>
+                    prev
+                      ? { ...prev, is_vip: true }
+                      : {
+                          id: currentUser?.id || 'vip',
+                          email: currentUser?.email || '',
+                          is_vip: true,
+                          is_banned: false,
+                          role: 'user',
+                        }
+                  );
+                  confetti({
+                    particleCount: 120,
+                    spread: 90,
+                    origin: { y: 0.6 },
+                    colors: ['#ffb703', '#00f2fe', '#ff007f', '#8a2be2'],
+                  });
+                  setTimeout(() => {
+                    setShowVipModal(false);
+                  }, 1800);
                 }}
-              >
-                Activar Pase VIP ($0.99 USD)
-              </button>
+                onError={(err) => {
+                  console.error('Error PayPal:', err);
+                }}
+              />
+
+              {/* Ayuda y Pago Alternativo por WhatsApp */}
+              <div className={styles.vipWhatsappHelp}>
+                <span>¿No tienes PayPal o prefieres pagar por QR / Transferencia?</span>
+                <button
+                  type="button"
+                  onClick={handleOpenWhatsApp}
+                  className={styles.vipWhatsappLinkBtn}
+                >
+                  <WhatsAppIcon size={16} />
+                  <span>Escríbenos por WhatsApp</span>
+                </button>
+              </div>
+
               <button
                 type="button"
                 className={styles.closeModalBtn}
@@ -1172,7 +1443,7 @@ export default function HomePage() {
                     >
                       <option value={1}>Previa Suave</option>
                       <option value={2}>Yo Nunca Clásico</option>
-                      <option value={3}>Modo Fuego (+18)</option>
+                      <option value={3}>Modo Fuego</option>
                       <option value={4}>Pa' quedar hecho P</option>
                     </select>
                   </div>
@@ -1223,16 +1494,141 @@ export default function HomePage() {
           </div>
         )}
 
+        {/* MODAL COMPARTIR RETO POR REDES SOCIALES */}
+        {showShareModal && (
+          <div
+            className={styles.modalOverlay}
+            onClick={() => setShowShareModal(false)}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="share-modal-title"
+          >
+            <div
+              className={`${styles.modalContent} ${styles.shareModalContent}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={styles.shareHeader}>
+                <div className={styles.shareIconBadge}>
+                  <Share2 size={24} color="var(--neon-cyan)" />
+                </div>
+                <h2 id="share-modal-title" className={styles.modalTitle}>
+                  Compartir Reto
+                </h2>
+                <p className={styles.modalDesc}>
+                  Pásale este reto a tus amigos o súbelo a tus estados de fiesta.
+                </p>
+              </div>
+
+              <div className={styles.sharePreviewBox}>
+                <span className={styles.sharePreviewCategory}>
+                  {selectedCategory.name}
+                </span>
+                <p className={styles.sharePreviewText}>
+                  &ldquo;{currentChallenge.content}&rdquo;
+                </p>
+                <span className={styles.sharePreviewPenalty}>
+                  Penitencia: {currentChallenge.drinks_penalty} trago(s)
+                </span>
+              </div>
+
+              <div className={styles.shareButtonsGrid}>
+                {/* WhatsApp */}
+                <a
+                  href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
+                    `🔥 ¡Reto de Shotsy para la previa! 🍻\n\n"${currentChallenge.content}"\n\nPenitencia: ${currentChallenge.drinks_penalty} trago(s).\n\n👉 ¡Juega gratis con nosotros en https://shotsy-web.vercel.app!`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${styles.shareNetworkBtn} ${styles.shareWhatsapp}`}
+                >
+                  <WhatsAppIcon size={20} />
+                  <span>WhatsApp</span>
+                </a>
+
+                {/* X / Twitter */}
+                <a
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                    `🔥 Reto de @ShotsyGame para la previa: "${currentChallenge.content}" (Penitencia: ${currentChallenge.drinks_penalty} tragos) 🍻 ¡Juega gratis:`
+                  )}&url=https%3A%2F%2Fshotsy-web.vercel.app`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${styles.shareNetworkBtn} ${styles.shareTwitter}`}
+                >
+                  <XTwitterIcon size={18} />
+                  <span>X (Twitter)</span>
+                </a>
+
+                {/* Facebook */}
+                <a
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                    'https://shotsy-web.vercel.app'
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${styles.shareNetworkBtn} ${styles.shareFacebook}`}
+                >
+                  <FacebookIcon size={18} />
+                  <span>Facebook</span>
+                </a>
+
+                {/* Copiar Portapapeles */}
+                <button
+                  type="button"
+                  onClick={handleCopyShareText}
+                  className={`${styles.shareNetworkBtn} ${styles.shareCopy}`}
+                >
+                  {isCopied ? <Check size={18} color="#00f2fe" /> : <Copy size={18} />}
+                  <span>{isCopied ? '¡Copiado!' : 'Copiar Texto'}</span>
+                </button>
+              </div>
+
+              {/* Compartir Nativo (Instagram Stories, Telegram, etc.) */}
+              {typeof navigator !== 'undefined' &&
+                typeof navigator.share === 'function' && (
+                  <button
+                    type="button"
+                    className={styles.nativeShareBtn}
+                    onClick={handleNativeShare}
+                  >
+                    <Share2 size={16} />
+                    <span>Compartir en otras Apps</span>
+                  </button>
+                )}
+
+              <button
+                type="button"
+                className={styles.closeModalBtn}
+                onClick={() => setShowShareModal(false)}
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* FOOTER */}
         <footer className={styles.footer}>
           <span>© 2026 Shotsy Game. Consumo responsable (+18).</span>
           <div className={styles.footerSocials}>
+            {/* Chat en Vivo sustituido en este elemento del footer */}
+            <button
+              type="button"
+              onClick={() => setShowChatModal(true)}
+              className={styles.footerLinkBtn}
+              title="Abrir Chat de Soporte en Vivo"
+              aria-label="Abrir Chat de Soporte en Vivo"
+            >
+              <span className={styles.onlineDot} aria-hidden="true" />
+              <MessageCircle size={16} />
+              <span>Chat en Vivo</span>
+            </button>
             <a
               href="https://www.facebook.com/profile.php?id=61595931090570"
               target="_blank"
               rel="noopener noreferrer"
               className={styles.footerLink}
             >
+              <FacebookIcon size={16} style={{ marginRight: 6 }} />
               Facebook
             </a>
             <a
@@ -1241,10 +1637,85 @@ export default function HomePage() {
               rel="noopener noreferrer"
               className={styles.footerLink}
             >
+              <InstagramIcon size={16} style={{ marginRight: 6 }} />
               Instagram
             </a>
           </div>
         </footer>
+
+        {/* BOTÓN FLOTANTE SOPORTE WHATSAPP (Requiere login previo) */}
+        <button
+          type="button"
+          onClick={handleOpenWhatsApp}
+          className={styles.whatsappFloat}
+          aria-label="Contactar soporte por WhatsApp"
+          title="Soporte por WhatsApp"
+        >
+          <WhatsAppIcon size={20} />
+          <span>WhatsApp</span>
+        </button>
+
+        {/* MODAL MINIMALISTA DE CHAT EN VIVO */}
+        {showChatModal && (
+          <div
+            className={styles.modalOverlay}
+            onClick={() => setShowChatModal(false)}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="chat-modal-title"
+          >
+            <div
+              className={`${styles.modalContent} ${styles.chatModalContent}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={styles.chatModalHeader}>
+                <div className={styles.chatTitleRow}>
+                  <div className={styles.chatIconBadge}>
+                    <MessageCircle size={18} color="var(--neon-cyan)" />
+                  </div>
+                  <div>
+                    <h2 id="chat-modal-title" className={styles.chatModalTitle}>
+                      Soporte en Vivo
+                    </h2>
+                    <div className={styles.chatStatusRow}>
+                      <span className={styles.onlineDot} aria-hidden="true" />
+                      <span className={styles.chatStatusText}>Asesor en línea</span>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className={styles.chatCloseIconBtn}
+                  onClick={() => setShowChatModal(false)}
+                  aria-label="Cerrar chat"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className={styles.chatIframeWrapper}>
+                <iframe
+                  src="https://tawk.to/chat/6aea1f46514dbd3c354cb2d0/1k6h8kb6p"
+                  title="Shotsy Live Chat"
+                  className={styles.chatIframe}
+                  allow="microphone; camera"
+                />
+              </div>
+
+              <div className={styles.chatModalFooter}>
+                <span>¿Prefieres WhatsApp?</span>
+                <button
+                  type="button"
+                  onClick={handleOpenWhatsApp}
+                  className={styles.chatWhatsappLinkBtn}
+                >
+                  <WhatsAppIcon size={14} />
+                  <span>Chatear por WhatsApp</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

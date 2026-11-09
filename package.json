@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@next/third-parties": "^16.4.3",
+    "@paypal/react-paypal-js": "^10.6.1",
     "@supabase/supabase-js": "^2.118.0",
     "canvas-confetti": "^1.9.4",
     "lucide-react": "^1.61.0",
