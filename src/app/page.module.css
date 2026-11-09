@@ -117,14 +117,55 @@
 }
 
 [data-theme="light"] .discoProtector {
-  background: radial-gradient(circle at 50% 50%, rgba(245, 244, 251, 0.3) 0%, rgba(245, 244, 251, 0.6) 100%);
+  background: radial-gradient(circle at 50% 50%, rgba(245, 244, 251, 0.12) 0%, rgba(245, 244, 251, 0.5) 100%);
 }
 
-[data-theme="light"] .discoBeam1,
-[data-theme="light"] .discoBeam2,
+[data-theme="light"] .discoBeam1 {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 0, 127, 0.45) 0%,
+    rgba(255, 0, 127, 0.22) 45%,
+    transparent 85%
+  );
+  mix-blend-mode: multiply;
+  filter: blur(34px);
+  opacity: 0.9;
+}
+
+[data-theme="light"] .discoBeam2 {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 180, 216, 0.45) 0%,
+    rgba(0, 180, 216, 0.22) 45%,
+    transparent 85%
+  );
+  mix-blend-mode: multiply;
+  filter: blur(36px);
+  opacity: 0.9;
+}
+
 [data-theme="light"] .discoBeam3 {
-  opacity: 0.35;
+  background: linear-gradient(
+    0deg,
+    rgba(138, 43, 226, 0.4) 0%,
+    rgba(138, 43, 226, 0.18) 50%,
+    transparent 90%
+  );
+  mix-blend-mode: multiply;
+  filter: blur(38px);
+  opacity: 0.9;
+}
+
+[data-theme="light"] .discoBeam4 {
+  background: radial-gradient(
+    circle,
+    rgba(255, 183, 3, 0.5) 0%,
+    rgba(255, 0, 127, 0.25) 45%,
+    transparent 70%
+  );
+  mix-blend-mode: multiply;
   filter: blur(45px);
+  opacity: 0.8;
 }
 
 @keyframes beamSweepLeft {
@@ -160,11 +201,19 @@
   width: 100%;
   max-width: 960px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-  gap: 24px;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 480px) {
+  .container {
+    padding: 16px;
+    gap: 24px;
+  }
 }
 
 @media (min-width: 768px) {
@@ -175,13 +224,13 @@
 }
 
 /* ==========================================================================
-   Header & Navegación
+   Header & Navegación (Responsive y sin desbordes)
    ========================================================================== */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
+  padding: 10px 14px;
   background: var(--glass-bg);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -189,6 +238,8 @@
   border-radius: var(--radius-lg);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
   transition: background 0.3s ease, border-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .logo {
@@ -200,6 +251,7 @@
   letter-spacing: -0.025em;
   color: var(--text-primary);
   user-select: none;
+  flex-shrink: 0;
 }
 
 .logoAccent {
@@ -210,7 +262,33 @@
 .headerActions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.headerSocialLink {
+  display: inline-flex;
+}
+
+@media (max-width: 520px) {
+  .header {
+    padding: 8px 10px;
+  }
+
+  .logo {
+    font-size: 1.25rem;
+  }
+
+  .headerSocialLink {
+    display: none;
+  }
+
+  .vipButton {
+    min-height: 38px;
+    padding: 0 10px;
+    font-size: 0.75rem;
+  }
 }
 
 /* Botones Icono (Target Táctil >= 44x44px) */
@@ -318,6 +396,96 @@
 @keyframes vipPulse {
   0%, 100% { box-shadow: 0 0 14px rgba(255, 183, 3, 0.35); }
   50% { box-shadow: 0 0 24px rgba(255, 183, 3, 0.65); }
+}
+
+/* ==========================================================================
+   Botón Ultra Llamativo para Usuario VIP (Sustituto de 'VIP Activo')
+   ========================================================================== */
+.vipUserPillBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, #1f1700 0%, #3d2c00 45%, #593f00 100%);
+  border: 1.5px solid var(--neon-gold);
+  color: #ffffff;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(255, 183, 3, 0.45), inset 0 0 12px rgba(255, 183, 3, 0.2);
+  transition: transform 0.15s var(--ease-tactile), box-shadow 0.15s ease;
+  will-change: transform;
+  animation: vipGlowAura 2.8s ease-in-out infinite alternate;
+}
+
+.vipUserPillBtn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 30px rgba(255, 183, 3, 0.8), inset 0 0 16px rgba(255, 183, 3, 0.4);
+}
+
+.vipUserPillBtn:active {
+  transform: scale(0.97);
+}
+
+@keyframes vipGlowAura {
+  0% {
+    box-shadow: 0 0 16px rgba(255, 183, 3, 0.4), inset 0 0 8px rgba(255, 183, 3, 0.2);
+    border-color: rgba(255, 183, 3, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 28px rgba(255, 183, 3, 0.8), inset 0 0 18px rgba(255, 215, 0, 0.35);
+    border-color: #ffd700;
+  }
+}
+
+.vipCrownBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: crownBob 2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 6px rgba(255, 183, 3, 0.9));
+}
+
+@keyframes crownBob {
+  0% { transform: translateY(0) rotate(-4deg); }
+  100% { transform: translateY(-2px) rotate(4deg); }
+}
+
+.vipUserNameText {
+  font-weight: 900;
+  font-size: 0.92rem;
+  letter-spacing: -0.01em;
+  color: #fff8e7;
+  text-shadow: 0 0 8px rgba(255, 183, 3, 0.5);
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vipActiveSparkle {
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #ffb703 0%, #fb8500 100%);
+  color: #07050f;
+  box-shadow: 0 0 8px rgba(255, 183, 3, 0.6);
+}
+
+@media (max-width: 520px) {
+  .vipUserPillBtn {
+    min-height: 38px;
+    padding: 0 12px;
+  }
+
+  .vipUserNameText {
+    max-width: 90px;
+    font-size: 0.84rem;
+  }
 }
 
 /* ==========================================================================
@@ -485,6 +653,14 @@
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 12px;
   margin-top: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .categoriesGrid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .categoryCard {
@@ -930,12 +1106,12 @@
   box-shadow: none;
 }
 
-/* 2. Pantalla de la Ruleta con Espaciado Generoso */
+/* 2. Pantalla de la Ruleta con Espaciado Generoso (Escalable para Móviles) */
 .wheelWrapper {
   position: relative;
-  width: 330px;
-  height: 330px;
-  margin: 16px 0 24px 0;
+  width: min(310px, calc(100vw - 44px));
+  height: min(310px, calc(100vw - 44px));
+  margin: 16px auto 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -943,18 +1119,18 @@
 
 @media (max-width: 400px) {
   .wheelWrapper {
-    width: 290px;
-    height: 290px;
-    margin: 12px 0 20px 0;
+    width: min(265px, calc(100vw - 32px));
+    height: min(265px, calc(100vw - 32px));
+    margin: 12px auto 20px;
   }
 }
 
 .wheelRing {
   position: absolute;
-  inset: -16px;
+  inset: -8px;
   border-radius: 50%;
   border: 3px dashed rgba(0, 242, 254, 0.45);
-  box-shadow: 0 0 26px rgba(0, 242, 254, 0.3), inset 0 0 16px rgba(255, 0, 127, 0.25);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.3), inset 0 0 14px rgba(255, 0, 127, 0.25);
   pointer-events: none;
   animation: ringRotate 24s linear infinite;
   will-change: transform;
@@ -1293,10 +1469,49 @@
   font-size: 0.92rem;
   outline: none;
   transition: border-color 0.15s ease;
+  box-sizing: border-box;
 }
 
 .formInput:focus, .formSelect:focus, .formTextarea:focus {
   border-color: var(--neon-cyan);
+}
+
+/* Campo de Contraseña con Toggle Ojo */
+.passwordFieldWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.passwordFieldWrapper .formInput {
+  padding-right: 48px;
+}
+
+.togglePasswordBtn {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  min-height: 38px;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s ease, transform 0.12s ease;
+}
+
+.togglePasswordBtn:hover {
+  color: var(--neon-cyan);
+  transform: scale(1.08);
+}
+
+.togglePasswordBtn:active {
+  transform: scale(0.94);
 }
 
 .formTextarea {
@@ -1375,6 +1590,7 @@
 .footer {
   margin-top: auto;
   padding-top: 24px;
+  padding-bottom: 24px;
   border-top: 1px solid var(--border-subtle);
   display: flex;
   flex-wrap: wrap;
@@ -1385,8 +1601,15 @@
   color: var(--text-muted);
 }
 
+@media (max-width: 600px) {
+  .footer {
+    padding-bottom: 68px; /* Espacio para que el botón flotante de WhatsApp no tape el texto */
+  }
+}
+
 .footerSocials {
   display: flex;
+  align-items: center;
   gap: 16px;
 }
 
@@ -1400,4 +1623,438 @@
 
 .footerLink:hover {
   color: var(--neon-cyan);
+}
+
+.footerLinkBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.85rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.15s ease, transform 0.12s ease;
+  padding: 0;
+}
+
+.footerLinkBtn:hover {
+  color: var(--neon-cyan);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   Botón Flotante Soporte WhatsApp Único
+   ========================================================================== */
+.whatsappFloat {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 99;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 16px;
+  border-radius: var(--radius-pill);
+  background: #25d366;
+  color: #07050f;
+  font-weight: 800;
+  font-size: 0.86rem;
+  box-shadow: 0 4px 22px rgba(37, 211, 102, 0.45);
+  text-decoration: none;
+  transition: transform 0.15s var(--ease-tactile), box-shadow 0.15s ease, filter 0.15s ease;
+  will-change: transform;
+}
+
+.whatsappFloat:hover {
+  transform: translateY(-2px) scale(1.02);
+  filter: brightness(1.08);
+  box-shadow: 0 6px 28px rgba(37, 211, 102, 0.65);
+}
+
+.whatsappFloat:active {
+  transform: scale(0.96);
+}
+
+@media (max-width: 600px) {
+  .whatsappFloat {
+    bottom: 14px;
+    left: 14px;
+    min-height: 40px;
+    padding: 0 12px;
+    font-size: 0.8rem;
+  }
+}
+
+.onlineDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00ff88;
+  box-shadow: 0 0 8px #00ff88;
+  animation: dotPulse 2s infinite ease-in-out;
+  flex-shrink: 0;
+}
+
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.6; }
+}
+
+/* ==========================================================================
+   Modal Minimalista de Chat en Vivo
+   ========================================================================== */
+.chatModalContent {
+  width: 100%;
+  max-width: 440px;
+  height: 580px;
+  max-height: 85vh;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border: 1px solid rgba(0, 242, 254, 0.45);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 242, 254, 0.25);
+  border-radius: var(--radius-lg);
+}
+
+.chatModalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: rgba(9, 6, 20, 0.9);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.chatTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chatIconBadge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 242, 254, 0.12);
+  border: 1px solid rgba(0, 242, 254, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.chatModalTitle {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.chatStatusRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.chatStatusText {
+  font-size: 0.76rem;
+  color: var(--neon-cyan);
+  font-weight: 700;
+}
+
+.chatCloseIconBtn {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.15s ease;
+}
+
+.chatCloseIconBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  border-color: var(--neon-pink);
+}
+
+.chatIframeWrapper {
+  flex: 1;
+  width: 100%;
+  min-height: 380px;
+  background: #ffffff;
+  position: relative;
+}
+
+.chatIframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.chatModalFooter {
+  padding: 10px 16px;
+  background: rgba(9, 6, 20, 0.92);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.chatWhatsappLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #25d366;
+  font-weight: 800;
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.chatWhatsappLink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .chatModalContent {
+    height: 88vh;
+    max-width: calc(100vw - 20px);
+  }
+
+  .chatModalFooter {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+  }
+}
+
+/* ==========================================================================
+   Fila de Botones de la Carta & Compartir Reto
+   ========================================================================== */
+.cardButtonsRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.shareButton {
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 24px;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 242, 254, 0.12);
+  border: 1px solid rgba(0, 242, 254, 0.4);
+  color: var(--neon-cyan);
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.15s var(--ease-tactile), background 0.15s ease, box-shadow 0.15s ease;
+  will-change: transform;
+}
+
+.shareButton:hover {
+  background: rgba(0, 242, 254, 0.22);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.35);
+  transform: translateY(-2px);
+}
+
+.shareButton:active {
+  transform: scale(0.97);
+}
+
+/* ==========================================================================
+   Modal de Compartir Reto
+   ========================================================================== */
+.shareModalContent {
+  max-width: 440px;
+}
+
+.shareHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.shareIconBadge {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(0, 242, 254, 0.12);
+  border: 1px solid rgba(0, 242, 254, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sharePreviewBox {
+  background: rgba(7, 5, 15, 0.7);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sharePreviewCategory {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+  color: var(--neon-cyan);
+}
+
+.sharePreviewText {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.sharePreviewPenalty {
+  font-size: 0.8rem;
+  color: var(--neon-pink);
+  font-weight: 700;
+}
+
+.shareButtonsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.shareNetworkBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 14px;
+  border-radius: var(--radius-md);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.12s var(--ease-tactile), filter 0.15s ease;
+  will-change: transform;
+  border: none;
+}
+
+.shareNetworkBtn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.shareNetworkBtn:active {
+  transform: scale(0.96);
+}
+
+.shareWhatsapp {
+  background: #25d366;
+  color: #07050f;
+}
+
+.shareTwitter {
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.shareFacebook {
+  background: #1877f2;
+  color: #ffffff;
+}
+
+.shareCopy {
+  background: rgba(0, 242, 254, 0.15);
+  border: 1px solid rgba(0, 242, 254, 0.4);
+  color: var(--neon-cyan);
+}
+
+.nativeShareBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  width: 100%;
+  border-radius: var(--radius-md);
+  background: linear-gradient(90deg, rgba(255, 0, 127, 0.2) 0%, rgba(138, 43, 226, 0.2) 100%);
+  border: 1px solid rgba(255, 0, 127, 0.4);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+
+.nativeShareBtn:hover {
+  transform: translateY(-1px);
+  border-color: var(--neon-pink);
+}
+
+.vipWhatsappHelp {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: rgba(37, 211, 102, 0.08);
+  border: 1px solid rgba(37, 211, 102, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.vipWhatsappLink,
+.vipWhatsappLinkBtn,
+.chatWhatsappLinkBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #25d366;
+  font-weight: 800;
+  font-size: 0.88rem;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.15s ease, transform 0.12s ease;
+}
+
+.vipWhatsappLink:hover,
+.vipWhatsappLinkBtn:hover,
+.chatWhatsappLinkBtn:hover {
+  opacity: 0.85;
+  text-decoration: underline;
+  transform: translateY(-1px);
 }
