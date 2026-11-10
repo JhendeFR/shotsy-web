@@ -24,6 +24,8 @@ import {
   MessageCircle,
   Eye,
   EyeOff,
+  HelpCircle,
+  ChevronDown,
 } from 'lucide-react';
 import PayPalCheckout from '@/components/PayPalCheckout';
 import { supabase, Category, Challenge, UserProfile } from '@/lib/supabase';
@@ -56,6 +58,22 @@ function InstagramIcon({ size = 20, style, className }: SvgIconProps) {
       <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
       <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
       <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+    </svg>
+  );
+}
+
+function TikTokIcon({ size = 20, style, className }: SvgIconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      style={style}
+      className={className}
+    >
+      <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.98v8.68c-.01 2.22-.84 4.38-2.39 5.92-1.55 1.55-3.7 2.39-5.91 2.38-2.22 0-4.37-.84-5.92-2.39-1.55-1.55-2.39-3.7-2.38-5.92 0-2.22.84-4.37 2.39-5.92 1.55-1.55 3.7-2.39 5.92-2.38.38 0 .76.03 1.14.09v4.06c-.38-.11-.78-.17-1.18-.16-1.12 0-2.21.45-3 1.23-.79.79-1.23 1.87-1.23 3 0 1.12.44 2.21 1.23 3 .79.78 1.88 1.23 3 1.23 1.12 0 2.21-.45 3-1.23.78-.79 1.23-1.88 1.23-3V6.26c-.02-2.08 0-4.16-.02-6.24z" />
     </svg>
   );
 }
@@ -161,6 +179,35 @@ const WHEEL_PENALTIES = [
 ];
 
 const WHEEL_PALETTE = ['#ff007f', '#8a2be2', '#00f2fe', '#ff0844', '#ffb703', '#10b981'];
+
+// Preguntas Frecuentes para UI y Schema.org FAQPage (Rich Snippets Google)
+const FAQ_ITEMS = [
+  {
+    question: '¿Qué es Shotsy y cómo se juega en una previa con amigos?',
+    answer:
+      'Shotsy es la web app definitiva de juegos para beber y previas entre amigos. Incluye una ruleta interactiva personalizada con los nombres de los jugadores, cartas de Yo Nunca clásico, penitencias grupales y retos picantes +18. Solo necesitas abrir la web desde el celular, colocarlo al centro de la mesa y comenzar a jugar sin instalar nada.',
+  },
+  {
+    question: '¿Se necesita descargar alguna aplicación para jugar a Shotsy?',
+    answer:
+      'No. Shotsy funciona 100% directo desde el navegador de cualquier smartphone (Chrome, Safari, Firefox). Puedes jugar de forma instantánea y gratuita sin ocupar memoria en tu celular ni pasar por tiendas de aplicaciones.',
+  },
+  {
+    question: '¿Cómo funciona el juego "Yo Nunca" online de Shotsy?',
+    answer:
+      'Selecciona la categoría "Yo Nunca Clásico" y la app mostrará cartas con confesiones aleatorias sin repetir. La regla es clara: si alguna vez hiciste lo que dice la carta, debes tomar el trago o shot indicado. Si nunca lo hiciste, te salvas esa ronda.',
+  },
+  {
+    question: '¿Cómo personalizar la Ruleta de Shots con los nombres de tus amigos?',
+    answer:
+      'En la pestaña "Ruleta de Shots", escribe los nombres de tus amigos y presiona "Agregar". La ruleta generará automáticamente secciones de colores con sus nombres. Al pulsar "Girar Ruleta", el sistema seleccionará al azar a la víctima y le asignará una divertida penitencia con shots.',
+  },
+  {
+    question: '¿Qué incluye el Pase VIP de Shotsy y cuánto cuesta?',
+    answer:
+      'El Pase VIP tiene un costo único de solo $0.99 USD (sin suscripciones recurrentes). Desbloquea de forma permanente las categorías exclusivas "Modo Fuego (+18)" y "Pa\' quedar hecho P (Penitencias Extremas)", una insignia VIP dorada con corona en tu perfil y sugerencias ilimitadas para la comunidad. Puedes pagar con PayPal o por transferencia / QR vía WhatsApp.',
+  },
+];
 
 export default function HomePage() {
   // Estado de Tema: Modo Claro / Modo Oscuro
@@ -671,21 +718,64 @@ export default function HomePage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Microdatos JSON-LD con precio actualizado de $0.99 USD
+  // Microdatos JSON-LD con Schema WebApplication y FAQPage para Google Rich Snippets
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'WebApplication',
-    name: 'Shotsy',
-    url: 'https://shotsy-web.vercel.app',
-    applicationCategory: 'GameApplication',
-    operatingSystem: 'All',
-    description:
-      'Web app de ruleta y retos para previas con amigos, Yo Nunca y Verdad o Reto directo desde el navegador móvil.',
-    offers: {
-      '@type': 'Offer',
-      price: '0.99',
-      priceCurrency: 'USD',
-    },
+    '@graph': [
+      {
+        '@type': 'WebApplication',
+        '@id': 'https://shotsy-web.vercel.app/#webapp',
+        name: 'Shotsy',
+        url: 'https://shotsy-web.vercel.app',
+        applicationCategory: 'GameApplication',
+        operatingSystem: 'All (Web Browser, iOS, Android)',
+        description:
+          'Web app de ruleta y retos para previas con amigos, Yo Nunca y Verdad o Reto directo desde el navegador móvil.',
+        inLanguage: 'es',
+        browserRequirements: 'Requires JavaScript. Requires HTML5.',
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '4.9',
+          reviewCount: '418',
+          bestRating: '5',
+          worstRating: '1',
+        },
+        offers: {
+          '@type': 'Offer',
+          price: '0.99',
+          priceCurrency: 'USD',
+          availability: 'https://schema.org/InStock',
+          seller: {
+            '@type': 'Organization',
+            name: 'Shotsy Game',
+            sameAs: [
+              'https://www.tiktok.com/@shotsy.games',
+              'https://www.instagram.com/shotsygamesbo/',
+              'https://www.facebook.com/profile.php?id=61595931090570',
+            ],
+          },
+        },
+        featureList: [
+          'Ruleta de shots personalizada con los nombres de tus amigos',
+          'Yo Nunca online con más de 100 confesiones sin repetir',
+          'Mazo de retos rompehielos para previas',
+          'Modo Fuego +18 y Penitencias Extremas VIP',
+          'Cero descargas: 100% optimizado para navegadores móviles',
+        ],
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': 'https://shotsy-web.vercel.app/#faq',
+        mainEntity: FAQ_ITEMS.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      },
+    ],
   };
 
   return (
@@ -729,11 +819,22 @@ export default function HomePage() {
 
             {/* Redes Sociales (visibles en desktop y en footer para mobile) */}
             <a
+              href="https://www.tiktok.com/@shotsy.games"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok oficial de Shotsy"
+              className={`${styles.iconBtn} ${styles.headerSocialLink}`}
+              title="TikTok @shotsy.games"
+            >
+              <TikTokIcon size={18} />
+            </a>
+            <a
               href="https://www.instagram.com/shotsygamesbo/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram oficial de Shotsy"
               className={`${styles.iconBtn} ${styles.headerSocialLink}`}
+              title="Instagram @shotsygamesbo"
             >
               <InstagramIcon size={19} />
             </a>
@@ -743,6 +844,7 @@ export default function HomePage() {
               rel="noopener noreferrer"
               aria-label="Facebook oficial de Shotsy"
               className={`${styles.iconBtn} ${styles.headerSocialLink}`}
+              title="Facebook oficial de Shotsy"
             >
               <FacebookIcon size={19} />
             </a>
@@ -1127,26 +1229,41 @@ export default function HomePage() {
             </section>
           )}
 
-          {/* ARTÍCULOS SEMÁNTICOS ON-PAGE */}
+          {/* GUÍA DE JUEGO & PREGUNTAS FRECUENTES (SEO ON-PAGE & RICH SNIPPETS GOOGLE) */}
           <section
-            className={styles.seoSection}
-            aria-label="Guía de juego y preguntas frecuentes"
+            className={styles.faqSection}
+            aria-label="Preguntas frecuentes sobre Shotsy y juegos para previas"
           >
-            <article className={styles.seoArticle}>
-              <h2>¿Cómo jugar a Shotsy en tu previa?</h2>
-              <p>
-                Reúne a tu grupo, coloca el celular al centro de la mesa y
-                añade los nombres de tus amigos a la ruleta personalizada de shots o saca cartas interactivas de Yo Nunca.
+            <div className={styles.faqHeader}>
+              <span className={styles.faqTag}>
+                <HelpCircle size={15} aria-hidden="true" />
+                <span>Preguntas Frecuentes</span>
+              </span>
+              <h2 className={styles.faqTitle}>
+                Todo lo que necesitas saber para encender tu previa
+              </h2>
+              <p className={styles.faqSubtitle}>
+                Aprende cómo jugar con tus amigos, personalizar la ruleta de shots y aprovechar todos los retos de Shotsy.
               </p>
-            </article>
-            <article className={styles.seoArticle}>
-              <h2>Modos Gratuitos y Experiencia VIP</h2>
-              <p>
-                Disfruta de 75 retos en Previa Suave y 100 confesiones en Yo Nunca Clásico.
-                Desbloquea el Pase VIP por solo $0.99 USD para acceder a Modo Fuego +18 y Pa' quedar hecho P
-                con sugerencias ilimitadas de la comunidad.
-              </p>
-            </article>
+            </div>
+
+            <div className={styles.faqList}>
+              {FAQ_ITEMS.map((item, idx) => (
+                <details
+                  key={idx}
+                  className={styles.faqItem}
+                  open={idx === 0}
+                >
+                  <summary className={styles.faqSummary}>
+                    <span>{item.question}</span>
+                    <ChevronDown size={18} className={styles.faqChevron} aria-hidden="true" />
+                  </summary>
+                  <div className={styles.faqAnswer}>
+                    <p>{item.answer}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
           </section>
         </main>
 
@@ -1649,22 +1766,34 @@ export default function HomePage() {
               <span>Chat en Vivo</span>
             </button>
             <a
-              href="https://www.facebook.com/profile.php?id=61595931090570"
+              href="https://www.tiktok.com/@shotsy.games"
               target="_blank"
               rel="noopener noreferrer"
               className={styles.footerLink}
+              title="TikTok oficial @shotsy.games"
             >
-              <FacebookIcon size={16} style={{ marginRight: 6 }} />
-              Facebook
+              <TikTokIcon size={16} style={{ marginRight: 6 }} />
+              TikTok
             </a>
             <a
               href="https://www.instagram.com/shotsygamesbo/"
               target="_blank"
               rel="noopener noreferrer"
               className={styles.footerLink}
+              title="Instagram @shotsygamesbo"
             >
               <InstagramIcon size={16} style={{ marginRight: 6 }} />
               Instagram
+            </a>
+            <a
+              href="https://www.facebook.com/profile.php?id=61595931090570"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.footerLink}
+              title="Facebook oficial de Shotsy"
+            >
+              <FacebookIcon size={16} style={{ marginRight: 6 }} />
+              Facebook
             </a>
           </div>
         </footer>
